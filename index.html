@@ -1649,13 +1649,7 @@
     // --- GEMINI AI OPERATIONS TRIAGE ---
     async function triageIdeaWithGemini(rawIdea) {
       const apiKey = settings.apiKey.trim();
-      if (!apiKey) {
-        openSettingsModal();
-        throw new Error("Please enter your Gemini API Key in Settings first.");
-      }
-
       const activeModel = settings.model || 'gemini-2.5-flash';
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${apiKey}`;
 
       const systemPrompt = `You are the user's elite Operations Manager & Personal Assistant (PA).
 Your user gets flooded with ideas and operational tasks, and thinking about whether to execute them exhausts their finite daily willpower.
@@ -1730,41 +1724,57 @@ Respond STRICTLY in valid JSON matching this schema:
   "manager_verdict": "Honest executive feedback..."
 }`;
 
-      const payload = {
-        contents: [{ role: "user", parts: [{ text: systemPrompt }] }],
-        generationConfig: {
-          temperature: 0.2,
-          responseMimeType: "application/json"
+      // 1. Direct Call (if local API key is configured)
+      if (apiKey) {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${apiKey}`;
+        const payload = {
+          contents: [{ role: "user", parts: [{ text: systemPrompt }] }],
+          generationConfig: {
+            temperature: 0.2,
+            responseMimeType: "application/json"
+          }
+        };
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error?.message || `Gemini API error: ${response.status}`);
         }
-      };
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+        const data = await response.json();
+        const textOutput = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!textOutput) throw new Error("No response generated from Gemini.");
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || `Gemini API error: ${response.status}`);
+        return JSON.parse(textOutput);
       }
 
-      const data = await response.json();
-      const textOutput = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!textOutput) throw new Error("No response generated from Gemini.");
+      // 2. Netlify Serverless Backend Fallback (/api/triage) if user set GEMINI_API_KEY in Netlify
+      try {
+        const netlifyResp = await fetch('/api/triage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: systemPrompt, model: activeModel })
+        });
+        if (netlifyResp && netlifyResp.ok) {
+          const textOutput = await netlifyResp.text();
+          return JSON.parse(textOutput);
+        }
+      } catch (err) {
+        console.warn("Backend /api/triage failed:", err);
+      }
 
-      return JSON.parse(textOutput);
+      openSettingsModal();
+      throw new Error("No Gemini API Key found. Please save your key in Settings, or add GEMINI_API_KEY to Netlify environment variables.");
     }
 
     async function handleIdeaSubmit() {
       const rawText = ideaInput.value.trim();
       if (!rawText) return;
-
-      if (!settings.apiKey) {
-        openSettingsModal();
-        alert("Please paste your Gemini API Key in Settings to activate the Operations Manager.");
-        return;
-      }
 
       btnSubmitIdea.disabled = true;
       aiLoading.classList.remove('hidden');
@@ -2099,6 +2109,15 @@ Respond STRICTLY in valid JSON matching this schema:
     }
 
     function closeSettingsModal() {
+      // Auto-save whatever is currently typed in before closing
+      const currentKey = inputApiKey.value.trim();
+      if (currentKey) {
+        settings.apiKey = currentKey;
+        settings.model = selectModel.value;
+        settings.webhookUrl = inputWebhookUrl.value.trim();
+        settings.autoSyncSheet = checkAutoSheet.checked;
+        localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+      }
       modalSettings.classList.add('hidden');
     }
 
@@ -2133,7 +2152,13 @@ Respond STRICTLY in valid JSON matching this schema:
           const err = await resp.json().catch(() => ({}));
           throw new Error(err.error?.message || `HTTP ${resp.status}`);
         }
-        showApiTestStatus(true, "✅ Connection successful! Gemini is ready.");
+        // Auto-save immediately upon successful test
+        settings.apiKey = testKey;
+        settings.model = model;
+        settings.webhookUrl = inputWebhookUrl.value.trim();
+        settings.autoSyncSheet = checkAutoSheet.checked;
+        localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+        showApiTestStatus(true, "✅ Connection successful! Key auto-saved permanently.");
       } catch (err) {
         showApiTestStatus(false, `❌ Error: ${err.message}`);
       }
@@ -2288,6 +2313,20 @@ Respond STRICTLY in valid JSON matching this schema:
       // Toggle key visibility
       document.getElementById('toggle-key-visibility').addEventListener('click', () => {
         inputApiKey.type = inputApiKey.type === 'password' ? 'text' : 'password';
+      });
+
+      // Auto-save API Key on input or Enter
+      inputApiKey.addEventListener('input', () => {
+        const val = inputApiKey.value.trim();
+        if (val) {
+          settings.apiKey = val;
+          localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+        }
+      });
+      inputApiKey.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          saveSettingsModal();
+        }
       });
 
       // Backup modal
