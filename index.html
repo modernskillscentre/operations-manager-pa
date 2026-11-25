@@ -80,12 +80,37 @@
     .animate-shake {
       animation: shake 0.35s ease-in-out;
     }
+
+    /* Core Day/Night Fallback Variables */
+    :root {
+      --bg-page: #f4f4f5;
+      --text-page: #18181b;
+      --bg-card: #ffffff;
+      --border-card: #e4e4e7;
+    }
+    html.dark {
+      --bg-page: #0c0c0e;
+      --text-page: #f4f4f5;
+      --bg-card: #141418;
+      --border-card: #27272a;
+    }
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-page);
+    }
   </style>
 </head>
 <body class="bg-zinc-100 text-zinc-900 dark:bg-[#0c0c0e] dark:text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-zinc-800 selection:text-white dark:selection:bg-zinc-200 dark:selection:text-zinc-950 transition-colors duration-150">
 
   <!-- 6-DIGIT PIN LOCK SCREEN OVERLAY -->
   <div id="pin-lock-overlay" class="fixed inset-0 z-[100] bg-zinc-100 dark:bg-[#09090b] flex flex-col items-center justify-center p-4 transition-all duration-300">
+    <!-- Top-Right Theme Toggle on Lock Screen -->
+    <div class="absolute top-4 right-4">
+      <button type="button" class="btn-toggle-theme-shared p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Toggle Day/Night Mode (T)">
+        <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+      </button>
+    </div>
+
     <div class="max-w-xs w-full text-center space-y-5">
       
       <!-- Brand & Icon -->
@@ -186,7 +211,7 @@
         </button>
 
         <!-- Day / Night Mode Toggle -->
-        <button id="btn-toggle-theme" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Toggle Day/Night Mode (T)">
+        <button id="btn-toggle-theme" class="btn-toggle-theme-shared p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Toggle Day/Night Mode (T)">
           <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
         </button>
 
@@ -1017,15 +1042,14 @@
 
     // --- THEME ENGINE (DAY / NIGHT) ---
     function updateThemeUI(isDark) {
-      const btn = document.getElementById('btn-toggle-theme');
-      if (btn) {
+      document.querySelectorAll('.btn-toggle-theme-shared').forEach(btn => {
         btn.innerHTML = isDark
           ? '<i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>'
           : '<i data-lucide="moon" class="w-3.5 h-3.5 text-zinc-700"></i>';
         btn.title = isDark ? "Switch to Day Mode (T)" : "Switch to Night Mode (T)";
-        if (window.lucide && typeof lucide.createIcons === 'function') {
-          lucide.createIcons({ root: btn });
-        }
+      });
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
       }
     }
 
@@ -2508,8 +2532,10 @@ Respond STRICTLY in valid JSON matching this schema:
         }
       });
 
-      // Theme toggle
-      document.getElementById('btn-toggle-theme')?.addEventListener('click', toggleTheme);
+      // Theme toggle (both in navbar and on lock screen)
+      document.querySelectorAll('.btn-toggle-theme-shared').forEach(btn => {
+        btn.addEventListener('click', toggleTheme);
+      });
       window.addEventListener('keydown', (e) => {
         if ((e.key === 't' || e.key === 'T') && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
           toggleTheme();
