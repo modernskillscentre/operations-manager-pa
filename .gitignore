@@ -1,0 +1,5 @@
+﻿operations_log.xlsx
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
