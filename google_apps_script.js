@@ -13,8 +13,19 @@
  * 9. Paste this URL into the web app's Settings -> Cloud Sync on any device!
  */
 
+// Pre-configured ID for your "Manager Ai" spreadsheet in Google Drive
+var DEFAULT_SPREADSHEET_ID = "1vry75J174L6VjlNULToRpEx9MFR9AGB1_WyWPDDxfvQ";
+
+function getSpreadsheet() {
+  try {
+    var active = SpreadsheetApp.getActiveSpreadsheet();
+    if (active) return active;
+  } catch(e) {}
+  return SpreadsheetApp.openById(DEFAULT_SPREADSHEET_ID);
+}
+
 function doGet(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = getSpreadsheet();
   var ideasSheet = getOrCreateSheet(ss, "Ideas");
   var configSheet = getOrCreateSheet(ss, "Config");
   
@@ -76,7 +87,7 @@ function doGet(e) {
 
 function doPost(e) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet();
     var ideasSheet = getOrCreateSheet(ss, "Ideas");
     var configSheet = getOrCreateSheet(ss, "Config");
     
