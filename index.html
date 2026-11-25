@@ -73,9 +73,71 @@
     .dark .custom-scrollbar::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.12);
     }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-7px); }
+      40%, 80% { transform: translateX(7px); }
+    }
+    .animate-shake {
+      animation: shake 0.35s ease-in-out;
+    }
   </style>
 </head>
 <body class="bg-zinc-100 text-zinc-900 dark:bg-[#0c0c0e] dark:text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-zinc-800 selection:text-white dark:selection:bg-zinc-200 dark:selection:text-zinc-950 transition-colors duration-150">
+
+  <!-- 6-DIGIT PIN LOCK SCREEN OVERLAY -->
+  <div id="pin-lock-overlay" class="fixed inset-0 z-[100] bg-zinc-100 dark:bg-[#09090b] flex flex-col items-center justify-center p-4 transition-all duration-300">
+    <div class="max-w-xs w-full text-center space-y-5">
+      
+      <!-- Brand & Icon -->
+      <div class="space-y-2">
+        <div class="w-12 h-12 rounded-2xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 flex items-center justify-center font-bold text-lg shadow-md mx-auto">
+          OM
+        </div>
+        <h2 id="pin-lock-title" class="text-base font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Operations Manager & PA</h2>
+        <p id="pin-lock-subtitle" class="text-xs text-zinc-500 font-mono">Enter 6-digit PIN to access</p>
+      </div>
+
+      <!-- 6 PIN Dots Indicator -->
+      <div id="pin-dots-container" class="flex items-center justify-center gap-3 py-2">
+        <span class="pin-dot w-3.5 h-3.5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 transition-all"></span>
+        <span class="pin-dot w-3.5 h-3.5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 transition-all"></span>
+        <span class="pin-dot w-3.5 h-3.5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 transition-all"></span>
+        <span class="pin-dot w-3.5 h-3.5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 transition-all"></span>
+        <span class="pin-dot w-3.5 h-3.5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 transition-all"></span>
+        <span class="pin-dot w-3.5 h-3.5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 transition-all"></span>
+      </div>
+
+      <!-- Status / Error message -->
+      <p id="pin-status-msg" class="text-xs font-mono text-rose-500 min-h-[1.25rem] transition-all"></p>
+
+      <!-- Numeric Keypad (touch / mobile / click) -->
+      <div class="grid grid-cols-3 gap-2 max-w-[220px] mx-auto text-base font-semibold font-mono text-zinc-800 dark:text-zinc-200">
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="1">1</button>
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="2">2</button>
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="3">3</button>
+
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="4">4</button>
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="5">5</button>
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="6">6</button>
+
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="7">7</button>
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="8">8</button>
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="9">9</button>
+
+        <button type="button" id="btn-pin-clear" class="h-11 rounded-xl text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 text-xs flex items-center justify-center transition active:scale-95" title="Clear">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        </button>
+        <button type="button" class="keypad-btn h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs transition active:scale-95" data-num="0">0</button>
+        <button type="button" id="btn-pin-backspace" class="h-11 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center justify-center transition active:scale-95" title="Backspace">
+          <i data-lucide="delete" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <p class="text-[10px] text-zinc-400 font-mono">You can also type numbers directly on your keyboard</p>
+    </div>
+  </div>
 
   <!-- TOP NAVBAR -->
   <header class="sticky top-0 z-40 bg-white/90 dark:bg-[#111114]/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80 px-4 py-2.5 sm:px-6 transition-colors">
@@ -129,6 +191,11 @@
         <button id="btn-toggle-theme" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Toggle Day/Night Mode">
           <i data-lucide="sun" id="theme-icon-sun" class="w-3.5 h-3.5 hidden dark:block"></i>
           <i data-lucide="moon" id="theme-icon-moon" class="w-3.5 h-3.5 block dark:hidden"></i>
+        </button>
+
+        <!-- Lock Screen Button -->
+        <button id="btn-lock-app" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Lock Screen (PIN)">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i>
         </button>
 
         <!-- Settings Button -->
@@ -750,6 +817,28 @@
           </div>
           <div id="webhook-test-status" class="hidden p-2 rounded text-[11px] border"></div>
         </div>
+
+        <!-- 3. Security & PIN Lock -->
+        <div class="p-3 bg-zinc-50 dark:bg-[#0c0c0e] rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="font-semibold text-zinc-700 dark:text-zinc-300 font-mono text-[11px] flex items-center gap-1.5">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400"></i>
+              3. 6-DIGIT MASTER PIN LOCK
+            </label>
+            <span id="settings-pin-status-badge" class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">Active</span>
+          </div>
+          <p class="text-[11px] text-zinc-500">
+            Locks the app and protects your API key, ideas, and goals across shared or mobile devices.
+          </p>
+          <div class="flex items-center gap-2 pt-1">
+            <button id="btn-change-pin" type="button" class="px-2.5 py-1 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded border border-zinc-200 dark:border-zinc-700 text-[11px] font-mono flex items-center gap-1">
+              <i data-lucide="key" class="w-3 h-3"></i> Change 6-Digit PIN
+            </button>
+            <button id="btn-lock-now-settings" type="button" class="px-2.5 py-1 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-semibold rounded text-[11px] flex items-center gap-1">
+              <i data-lucide="lock" class="w-3 h-3"></i> Lock Screen Now
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="pt-2 flex justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800">
@@ -834,6 +923,12 @@
     const STORAGE_KEY_SETTINGS = 'brain_dump_settings_v1';
     const STORAGE_KEY_FOCUS = 'brain_dump_focus_v1';
     const STORAGE_KEY_METRICS = 'brain_dump_metrics_v1';
+    const STORAGE_KEY_PIN = 'om_security_pin_v1';
+    const SESSION_KEY_UNLOCKED = 'om_session_unlocked_v1';
+
+    let enteredPin = '';
+    let pinSetupStep = 0; // 0 = unlock mode, 1 = initial setup enter, 2 = confirm setup enter
+    let tempSetupPin = '';
 
     const DEFAULT_METRICS = {
       savedCar: 0,
@@ -910,6 +1005,14 @@
     const webhookTestStatus = document.getElementById('webhook-test-status');
     const guideBox = document.getElementById('guide-box');
 
+    // PIN Lock Elements
+    const pinLockOverlay = document.getElementById('pin-lock-overlay');
+    const pinLockTitle = document.getElementById('pin-lock-title');
+    const pinLockSubtitle = document.getElementById('pin-lock-subtitle');
+    const pinStatusMsg = document.getElementById('pin-status-msg');
+    const pinDotsContainer = document.getElementById('pin-dots-container');
+    const pinDots = document.querySelectorAll('.pin-dot');
+
     // Voice
     const btnVoice = document.getElementById('btn-voice');
     const voiceLabel = document.getElementById('voice-label');
@@ -943,8 +1046,174 @@
       }
     }
 
+    // --- 6-DIGIT MASTER PIN LOCK ENGINE ---
+    function initPinLock() {
+      const storedPin = localStorage.getItem(STORAGE_KEY_PIN);
+      const isUnlocked = sessionStorage.getItem(SESSION_KEY_UNLOCKED) === 'true';
+
+      if (!storedPin) {
+        // Setup Mode: Prompt user to set a master 6-digit PIN
+        pinSetupStep = 1;
+        tempSetupPin = '';
+        enteredPin = '';
+        if (pinLockTitle) pinLockTitle.textContent = "Set 6-Digit Master PIN";
+        if (pinLockSubtitle) pinLockSubtitle.textContent = "Create a 6-digit PIN to secure your app & API key";
+        if (pinStatusMsg) pinStatusMsg.textContent = "";
+        pinLockOverlay?.classList.remove('hidden');
+        renderPinDots();
+      } else if (!isUnlocked) {
+        // App is locked for the current session
+        pinSetupStep = 0;
+        enteredPin = '';
+        if (pinLockTitle) pinLockTitle.textContent = "Operations Manager & PA";
+        if (pinLockSubtitle) pinLockSubtitle.textContent = "Enter 6-digit PIN to access";
+        if (pinStatusMsg) pinStatusMsg.textContent = "";
+        pinLockOverlay?.classList.remove('hidden');
+        renderPinDots();
+      } else {
+        // App is already unlocked in this session
+        pinLockOverlay?.classList.add('hidden');
+      }
+
+      updateSettingsPinBadge();
+    }
+
+    function renderPinDots() {
+      pinDots.forEach((dot, idx) => {
+        if (idx < enteredPin.length) {
+          dot.className = "pin-dot w-3.5 h-3.5 rounded-full bg-zinc-900 dark:bg-zinc-100 border-2 border-zinc-900 dark:border-zinc-100 scale-110 transition-all";
+        } else {
+          dot.className = "pin-dot w-3.5 h-3.5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 bg-transparent transition-all";
+        }
+      });
+    }
+
+    function handlePinDigit(digit) {
+      if (enteredPin.length >= 6) return;
+      enteredPin += String(digit);
+      renderPinDots();
+      if (pinStatusMsg) pinStatusMsg.textContent = '';
+
+      if (enteredPin.length === 6) {
+        processCompletedPin();
+      }
+    }
+
+    function handlePinBackspace() {
+      if (enteredPin.length > 0) {
+        enteredPin = enteredPin.slice(0, -1);
+        renderPinDots();
+        if (pinStatusMsg) pinStatusMsg.textContent = '';
+      }
+    }
+
+    function clearEnteredPin() {
+      enteredPin = '';
+      renderPinDots();
+    }
+
+    function triggerPinShake(errorMsg) {
+      if (pinDotsContainer) {
+        pinDotsContainer.classList.add('animate-shake');
+        setTimeout(() => {
+          pinDotsContainer.classList.remove('animate-shake');
+        }, 400);
+      }
+      if (errorMsg && pinStatusMsg) {
+        pinStatusMsg.textContent = errorMsg;
+        pinStatusMsg.className = "text-xs font-mono text-rose-500 min-h-[1.25rem] transition-all";
+      }
+      setTimeout(() => {
+        clearEnteredPin();
+      }, 350);
+    }
+
+    function unlockApp() {
+      sessionStorage.setItem(SESSION_KEY_UNLOCKED, 'true');
+      pinDots.forEach(dot => {
+        dot.className = "pin-dot w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-emerald-500 scale-110 transition-all";
+      });
+      if (pinStatusMsg) {
+        pinStatusMsg.textContent = "Unlocked";
+        pinStatusMsg.className = "text-xs font-mono text-emerald-500 min-h-[1.25rem] transition-all";
+      }
+      
+      setTimeout(() => {
+        pinLockOverlay?.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          pinLockOverlay?.classList.add('hidden');
+          pinLockOverlay?.classList.remove('opacity-0', 'pointer-events-none');
+          clearEnteredPin();
+        }, 200);
+      }, 150);
+    }
+
+    function lockAppNow() {
+      sessionStorage.removeItem(SESSION_KEY_UNLOCKED);
+      initPinLock();
+    }
+
+    function processCompletedPin() {
+      const storedPin = localStorage.getItem(STORAGE_KEY_PIN);
+
+      if (pinSetupStep === 1) {
+        // Step 1: Record initial 6 digits and request confirmation
+        tempSetupPin = enteredPin;
+        enteredPin = '';
+        pinSetupStep = 2;
+        if (pinLockTitle) pinLockTitle.textContent = "Confirm 6-Digit PIN";
+        if (pinLockSubtitle) pinLockSubtitle.textContent = "Re-enter the same 6-digit PIN to confirm";
+        if (pinStatusMsg) {
+          pinStatusMsg.textContent = "Enter again to verify";
+          pinStatusMsg.className = "text-xs font-mono text-blue-500 min-h-[1.25rem]";
+        }
+        renderPinDots();
+      } else if (pinSetupStep === 2) {
+        // Step 2: Compare with first entered PIN
+        if (enteredPin === tempSetupPin) {
+          localStorage.setItem(STORAGE_KEY_PIN, enteredPin);
+          updateSettingsPinBadge();
+          unlockApp();
+        } else {
+          pinSetupStep = 1;
+          tempSetupPin = '';
+          if (pinLockTitle) pinLockTitle.textContent = "Set 6-Digit Master PIN";
+          if (pinLockSubtitle) pinLockSubtitle.textContent = "Create a 6-digit PIN to secure your app & API key";
+          triggerPinShake("PINs did not match. Please start over.");
+        }
+      } else {
+        // Normal Unlock Mode
+        if (enteredPin === storedPin) {
+          unlockApp();
+        } else {
+          triggerPinShake("Incorrect PIN. Please try again.");
+        }
+      }
+    }
+
+    function changeMasterPin() {
+      if (confirm("Reset your 6-digit Master PIN? You will be prompted to set a new 6-digit PIN immediately.")) {
+        localStorage.removeItem(STORAGE_KEY_PIN);
+        sessionStorage.removeItem(SESSION_KEY_UNLOCKED);
+        modalSettings.classList.add('hidden');
+        initPinLock();
+      }
+    }
+
+    function updateSettingsPinBadge() {
+      const badge = document.getElementById('settings-pin-status-badge');
+      if (badge) {
+        const hasPin = !!localStorage.getItem(STORAGE_KEY_PIN);
+        badge.textContent = hasPin ? 'Active (6-Digit)' : 'Not Set';
+        badge.className = hasPin 
+          ? 'font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+          : 'font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-400 border border-amber-200 dark:border-amber-800';
+      }
+    }
+
     // --- INITIALIZATION ---
     function init() {
+      initPinLock();
       checkUrlPairing();
       lucide.createIcons();
       updateThemeUI(document.documentElement.classList.contains('dark'));
@@ -2105,6 +2374,7 @@ Respond STRICTLY in valid JSON matching this schema:
       checkAutoSheet.checked = !!settings.autoSyncSheet;
       apiTestStatus.classList.add('hidden');
       webhookTestStatus.classList.add('hidden');
+      updateSettingsPinBadge();
       modalSettings.classList.remove('hidden');
     }
 
@@ -2327,6 +2597,40 @@ Respond STRICTLY in valid JSON matching this schema:
         if (e.key === 'Enter') {
           saveSettingsModal();
         }
+      });
+
+      // PIN Keypad buttons & physical keyboard
+      document.querySelectorAll('.keypad-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const num = btn.getAttribute('data-num');
+          if (num !== null) handlePinDigit(num);
+        });
+      });
+      document.getElementById('btn-pin-backspace')?.addEventListener('click', handlePinBackspace);
+      document.getElementById('btn-pin-clear')?.addEventListener('click', clearEnteredPin);
+
+      window.addEventListener('keydown', (e) => {
+        if (!pinLockOverlay || pinLockOverlay.classList.contains('hidden')) return;
+        if (e.key >= '0' && e.key <= '9') {
+          e.preventDefault();
+          handlePinDigit(e.key);
+        } else if (e.key === 'Backspace') {
+          e.preventDefault();
+          handlePinBackspace();
+        } else if (e.key === 'Escape' || e.key === 'Delete') {
+          e.preventDefault();
+          clearEnteredPin();
+        }
+      });
+
+      // Navbar Lock Button
+      document.getElementById('btn-lock-app')?.addEventListener('click', lockAppNow);
+
+      // Settings Modal PIN actions
+      document.getElementById('btn-change-pin')?.addEventListener('click', changeMasterPin);
+      document.getElementById('btn-lock-now-settings')?.addEventListener('click', () => {
+        modalSettings.classList.add('hidden');
+        lockAppNow();
       });
 
       // Backup modal
