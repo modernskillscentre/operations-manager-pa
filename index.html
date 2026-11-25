@@ -367,13 +367,13 @@
 
   <!-- MODAL: GOALS & CONTEXT SETTINGS -->
   <div id="modal-goals" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-[#141418] border border-zinc-200 dark:border-zinc-800 rounded-xl max-w-lg w-full p-5 sm:p-6 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+    <div class="bg-white dark:bg-[#141418] border border-zinc-200 dark:border-zinc-800 rounded-xl max-w-2xl w-full p-5 sm:p-6 shadow-xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
       <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
         <div class="flex items-center gap-2">
-          <i data-lucide="target" class="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
+          <i data-lucide="target" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
           <div>
-            <h2 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Master Strategic Goals</h2>
-            <p class="text-[11px] text-zinc-500">The hard constraints used by the Operations Manager</p>
+            <h2 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Master Strategic Goals & Mandala Blueprint</h2>
+            <p class="text-[11px] text-zinc-500">The Sri Lanka Settlement constraints used by your AI Operations Manager</p>
           </div>
         </div>
         <button id="btn-close-goals" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1">
@@ -381,33 +381,88 @@
         </button>
       </div>
 
-      <div class="space-y-3.5 text-xs">
+      <!-- VISUAL MANDALA BLUEPRINT CARD -->
+      <div class="p-3.5 bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
+            <span class="text-[11px] font-mono font-bold uppercase tracking-wide text-zinc-800 dark:text-zinc-200">Active Life Mandala (Sri Lanka Settle Plan)</span>
+          </div>
+          <button id="btn-load-mandala" type="button" class="text-[11px] font-mono text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Load Preset
+          </button>
+        </div>
+
+        <!-- 3x3 Mini Mandala Summary Grid -->
+        <div class="grid grid-cols-3 gap-1.5 text-[10px] font-mono text-zinc-700 dark:text-zinc-300">
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-emerald-600 dark:text-emerald-400">🚗 Car (4M)</div>
+            <div class="text-[9px] text-zinc-500">1.5M upfront down payment</div>
+          </div>
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-emerald-600 dark:text-emerald-400">🏡 Home (2M)</div>
+            <div class="text-[9px] text-zinc-500">8 phases (roof, plaster, bath, etc.)</div>
+          </div>
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-emerald-600 dark:text-emerald-400">🎓 Online Class (0.6M)</div>
+            <div class="text-[9px] text-zinc-500">Smart Board, AC, Mics, Cam</div>
+          </div>
+
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-blue-600 dark:text-blue-400">📱 Social Media</div>
+            <div class="text-[9px] text-zinc-500">YT, TikTok, FB (100K ➔ 500K)</div>
+          </div>
+          <div class="p-2 rounded bg-amber-500/10 border border-amber-500/30 text-center flex flex-col justify-center items-center">
+            <div class="font-bold text-amber-600 dark:text-amber-400">🧘 Peace of Mind</div>
+            <div class="text-[9px] text-amber-700 dark:text-amber-300">Settle in Sri Lanka</div>
+          </div>
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-purple-600 dark:text-purple-400">🛡️ Safety Net (10M)</div>
+            <div class="text-[9px] text-zinc-500">Living runway & buffer</div>
+          </div>
+
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-blue-600 dark:text-blue-400">🌳 English Tree</div>
+            <div class="text-[9px] text-zinc-500">Core education course engine</div>
+          </div>
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-zinc-800 dark:text-zinc-200">🔨 House Detail</div>
+            <div class="text-[9px] text-zinc-500">බාස්, වහල, උලුවහු, කපරාරු</div>
+          </div>
+          <div class="p-2 rounded bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60">
+            <div class="font-bold text-rose-600 dark:text-rose-400">👶 Baby & Family</div>
+            <div class="text-[9px] text-zinc-500">The foundational "Why"</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3 text-xs">
         <div>
-          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🎯 PRIMARY GOAL & HARD DEADLINE</label>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🎯 PRIMARY GOAL (SETTLEMENT & CAPITAL OUTFLOWS)</label>
           <input 
             id="input-goal1" 
             type="text" 
-            placeholder="e.g., Ship 10 YouTube Spoken English videos by Dec 31" 
+            placeholder="e.g., Settle in Sri Lanka: Finish House (2M LKR) & Car (4M LKR, 1.5M upfront down payment)" 
             class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none focus:border-zinc-400"
           >
         </div>
 
         <div>
-          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🎯 SECONDARY GOAL (OPTIONAL)</label>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🎯 SECONDARY GOAL (REVENUE ENGINE & SAFETY NET)</label>
           <input 
             id="input-goal2" 
             type="text" 
-            placeholder="e.g., $2,000/mo course sales target by March" 
+            placeholder="e.g., Scale English Tree & Online Class Studio (0.6M gear) with Social (100K➔500K) to fund 10M Safety Net" 
             class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none focus:border-zinc-400"
           >
         </div>
 
         <div>
-          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">⏳ AVAILABLE BANDWIDTH & TIME</label>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">⏳ AVAILABLE DAILY BANDWIDTH</label>
           <input 
             id="input-bandwidth" 
             type="text" 
-            placeholder="e.g., 2 hours on weekday evenings" 
+            placeholder="e.g., 1-2 hours focused evening deep work + weekend operational reviews" 
             class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none focus:border-zinc-400"
           >
         </div>
@@ -417,25 +472,26 @@
           <textarea 
             id="input-antigoals" 
             rows="2" 
-            placeholder="e.g., No starting new software projects; No low-paid freelance client work" 
+            placeholder="e.g., No shiny object side projects (dropshipping/random apps); no low-rate client work; no car buying before 1.5M cash upfront is secured" 
             class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none focus:border-zinc-400 resize-none"
           ></textarea>
         </div>
 
         <div>
-          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🛠️ AVAILABLE TOOLSET</label>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🛠️ ACTIVE TOOLSET & PLATFORMS</label>
           <input 
             id="input-tools" 
             type="text" 
-            placeholder="e.g., PC, CapCut, Premiere, Remotion, Canva" 
+            placeholder="e.g., PC, Premiere/CapCut, Social Media (YT, TikTok, FB), Studio Setup (Smart Board, AC, Mic, Camera, Lights), English Tree" 
             class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none focus:border-zinc-400"
           >
         </div>
       </div>
 
-      <div class="pt-2 flex justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800">
+      <div class="pt-2 flex justify-between items-center border-t border-zinc-100 dark:border-zinc-800">
+        <span class="text-[11px] text-zinc-400 font-mono">Changes sync automatically across paired devices</span>
         <button id="btn-save-goals" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-lg font-semibold text-xs shadow-sm transition">
-          Save Constraints
+          Save Goals Profile
         </button>
       </div>
     </div>
@@ -625,14 +681,23 @@
     const STORAGE_KEY_SETTINGS = 'brain_dump_settings_v1';
     const STORAGE_KEY_FOCUS = 'brain_dump_focus_v1';
 
+    const SRI_LANKA_MANDALA_PRESET = {
+      goal1: "Settle in Sri Lanka with Peace of Mind: Finish House (2M LKR) & Buy Car (4M LKR, 1.5M upfront down payment)",
+      goal2: "Scale English Tree & Online Class Studio (0.6M gear) via Social Media (YT/FB/TikTok 100K ➔ 500K) to fund 10M Safety Net",
+      bandwidth: "1-2 hours daily focused evening work + weekend operational planning",
+      antigoals: "No shiny object side projects (e.g. random apps, dropshipping); no low-rate freelance work; no car buying before 1.5M cash upfront is secured; protect mental energy for baby & family",
+      tools: "PC, Premiere/CapCut, Social Media (YouTube, TikTok, Facebook), Studio Setup (Smart Board, AC, Mic, Camera, Lights), English Tree",
+      mandalaActive: true
+    };
+
     let ideas = JSON.parse(localStorage.getItem(STORAGE_KEY_IDEAS) || '[]');
-    let goals = JSON.parse(localStorage.getItem(STORAGE_KEY_GOALS) || JSON.stringify({
-      goal1: '',
-      goal2: '',
-      bandwidth: '',
-      antigoals: '',
-      tools: ''
-    }));
+    let rawGoals = localStorage.getItem(STORAGE_KEY_GOALS);
+    let goals = rawGoals ? JSON.parse(rawGoals) : SRI_LANKA_MANDALA_PRESET;
+    // Auto-populate Sri Lanka preset if empty or legacy generic placeholder
+    if (!goals.goal1 || !goals.goal1.trim() || goals.goal1.includes('YouTube Spoken English videos')) {
+      goals = { ...SRI_LANKA_MANDALA_PRESET };
+      localStorage.setItem(STORAGE_KEY_GOALS, JSON.stringify(goals));
+    }
     let settings = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS) || JSON.stringify({
       apiKey: '',
       model: 'gemini-2.5-flash',
@@ -724,9 +789,9 @@
         previewGoalText.className = "truncate text-zinc-900 dark:text-zinc-100 text-xs font-medium";
         goalsStatusBadge.className = 'w-2 h-2 rounded-full bg-emerald-500';
       } else {
-        previewGoalText.textContent = "No goals configured yet. Tap here to set your primary goal!";
-        previewGoalText.className = "truncate text-zinc-400 italic text-xs";
-        goalsStatusBadge.className = 'w-2 h-2 rounded-full bg-amber-500';
+        previewGoalText.textContent = "Settle in Sri Lanka: Finish House (2M) • Car (1.5M Down) • English Tree (100K➔500K)";
+        previewGoalText.className = "truncate text-zinc-700 dark:text-zinc-300 text-xs font-medium";
+        goalsStatusBadge.className = 'w-2 h-2 rounded-full bg-emerald-500';
       }
     }
 
@@ -1344,29 +1409,50 @@
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${apiKey}`;
 
       const systemPrompt = `You are the user's elite Operations Manager & Personal Assistant (PA).
-Your user gets flooded with ideas and operational tasks, and thinking about whether to execute them exhausts their willpower.
-Your mandate is to take this raw thought, cross-examine it against their current active goals, deadlines, and bandwidth, and make an authoritative executive decision:
+Your user gets flooded with ideas and operational tasks, and thinking about whether to execute them exhausts their finite daily willpower.
+Your mandate is to take this raw thought, cross-examine it against their Master Life Plan & Sri Lanka Relocation Mandala, and make an authoritative executive decision:
 
 1. Category:
-   - "DO_NOW": High alignment with current active goal, immediate high leverage or quick win this week.
-   - "SOMEDAY": Good idea with real merit, but executes later or distracts from the immediate deadline. File into deep freeze so the user can relax knowing it's not lost.
-   - "DELEGATE": Can be automated using tools/AI/scripts or delegated without eating user's personal creative time.
-   - "DISTRACTION": A shiny object that clashes with anti-goals or actively derails the user's focus. Ruthlessly park it and explain why.
-2. Alignment Score: 1 to 10 (10 = directly produces the user's primary goal deadline).
-3. "WHEN": Specific actionable timeframe or conditional trigger (e.g. "Thursday 2:00 PM - 45 mins", or "Hold until Primary Goal #1 launches on Dec 31").
-4. "WHERE": Specific context or tool (e.g. "In Premiere Pro", "In Notion", "As a short 30s CapCut reel").
+   - "DO_NOW": High alignment with current active engine (English Tree course, Social Media 100K audience growth, or critical House construction milestone). High leverage or quick win this week.
+   - "SOMEDAY": Good idea with real merit, but executes later or distracts from the immediate cash & relocation milestones. File into deep freeze so the user can relax knowing it's safely logged.
+   - "DELEGATE": Can be automated using tools/AI/scripts or delegated to a contractor/assistant without eating user's personal creative energy.
+   - "DISTRACTION": A shiny object that clashes with anti-goals or actively derails the user's Sri Lanka settlement focus. Ruthlessly park it and explain why.
+2. Alignment Score: 1 to 10 (10 = directly produces revenue for the Car 1.5M down payment / House 2M or advances the Sri Lanka settlement).
+3. "WHEN": Specific actionable timeframe or conditional trigger (e.g. "Tonight 8:30 PM - 30 mins", "Saturday morning 9:00 AM", or "Hold until TikTok hits 100K").
+4. "WHERE": Specific context or tool (e.g. "In CapCut / TikTok editor", "Call to Sri Lanka mason / electrician", "In Premiere Pro", "Studio setup").
 5. "HOW": Exactly 3 actionable micro-steps:
    - Step 1: First 5-minute kickoff action (to beat procrastination)
    - Step 2: Core execution step
    - Step 3: Done definition / completion criteria
-6. "MANAGER_VERDICT": 1-2 punchy, honest, empathetic executive sentences explaining why this decision was made.
+6. "MANAGER_VERDICT": 1-2 punchy, honest, empathetic executive sentences explaining why this decision was made in the context of their Sri Lanka relocation goals.
 
-USER CONTEXT & GOALS:
-- Primary Goal & Deadline: ${goals.goal1 || "Not specified (assume building a creative/educational project with limited daily time)"}
-- Secondary Goal: ${goals.goal2 || "None"}
-- Weekly Bandwidth: ${goals.bandwidth || "Standard limited creator bandwidth (1-2 hours/day)"}
-- Anti-Goals / Constraints: ${goals.antigoals || "Avoid shiny objects and long distractions"}
-- Available Tools: ${goals.tools || "PC, standard video editing & AI tools"}
+USER'S MASTER LIFE BLUEPRINT (MANDALA / HARADA METHOD):
+- NORTH STAR: Settle back in Sri Lanka with complete "Peace of Mind" and family stability.
+- CAPITAL OUTFLOWS (What must be funded):
+  1. CAR (4M LKR): Requires minimum 1.5M (15 Lakhs) upfront down payment before purchase.
+  2. HOUSE COMPLETION (2M LKR / 20 Lakhs): 8 specific construction phases:
+     - Phase 1: Demolition & structural rebuild with mason (බාස් ගෙනැල්ලා කඩලා හදන ටික)
+     - Phase 2: Roof (වහල)
+     - Phase 3: Windows & door frames (ජනෙල් උලුවහු)
+     - Phase 4: Floor concrete, plastering, wiring conduit pipes & switch boxes (බිම කොන්ක්‍රීට් + කපරාරුව + වයරිං බට + ස්විච් බොක්ස්)
+     - Phase 5: Bathroom (බාත් රූම් එක)
+     - Phase 6: Electrician wiring & fixtures
+     - Phase 7: Paint
+     - Phase 8: Furniture
+  3. SAFETY NET: 10M LKR liquid runway to guarantee peace of mind.
+- REVENUE & CASH ENGINES (How the money is generated):
+  4. ONLINE CLASS STUDIO SETUP (0.6M LKR): Smart Board, AC, Mics, Camera, Studio Lights.
+  5. ENGLISH TREE: Core high-margin educational business & course products.
+  6. SOCIAL MEDIA AUDIENCE FUNNEL: Grow YouTube, Facebook, and TikTok from 100K to 500K followers to feed enrolled students into English Tree & Online Classes.
+- LIFE & FAMILY:
+  7. BABY & FAMILY: The foundational "Why" behind returning to Sri Lanka.
+
+USER'S IMMEDIATE CONSTRAINTS:
+- Primary Goal: ${goals.goal1 || "Settle in Sri Lanka: Finish House (2M LKR) & Car (1.5M Down)"}
+- Secondary Goal: ${goals.goal2 || "Scale English Tree & Social Media (100K➔500K) to fund 10M Safety Net"}
+- Daily Bandwidth: ${goals.bandwidth || "1-2 hours daily focused evening work"}
+- Anti-Goals: ${goals.antigoals || "No shiny object side projects, no premature car buying without 1.5M cash upfront"}
+- Available Tools: ${goals.tools || "PC, Social Media (YT, TikTok, FB), Video Editors, Studio gear, English Tree"}
 
 RAW INPUT FROM USER:
 "${rawIdea}"
@@ -1871,6 +1957,13 @@ Respond STRICTLY in valid JSON matching this schema:
       document.getElementById('active-goal-preview').addEventListener('click', openGoalsModal);
       document.getElementById('btn-close-goals').addEventListener('click', closeGoalsModal);
       document.getElementById('btn-save-goals').addEventListener('click', saveGoalsModal);
+      document.getElementById('btn-load-mandala')?.addEventListener('click', () => {
+        inputGoal1.value = SRI_LANKA_MANDALA_PRESET.goal1;
+        inputGoal2.value = SRI_LANKA_MANDALA_PRESET.goal2;
+        inputBandwidth.value = SRI_LANKA_MANDALA_PRESET.bandwidth;
+        inputAntigoals.value = SRI_LANKA_MANDALA_PRESET.antigoals;
+        inputTools.value = SRI_LANKA_MANDALA_PRESET.tools;
+      });
 
       // Settings modal
       document.getElementById('btn-open-settings').addEventListener('click', openSettingsModal);

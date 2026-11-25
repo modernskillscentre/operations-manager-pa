@@ -68,26 +68,93 @@ For any actionable task, the Operations Manager eliminates procrastination by pr
 
 ---
 
-## 4. The Complete Master Prompt (Embedded in App)
+## 4. Active Master Strategic Blueprint: Sri Lanka Relocation Mandala
+
+The Operations Manager evaluates all inbound thoughts against the founder's **8-Pillar Life Mandala (Harada Method)**:
+
+```mermaid
+graph TD
+    Vision["<b>Center: Peace of Mind</b><br/>(Settle back in Sri Lanka)"]
+
+    subgraph Inflows ["Revenue & Audience Engines"]
+        Social["<b>Social Media Reach</b><br/>YT, FB, TikTok (100K ➔ 500K)"]
+        Studio["<b>Online Class Studio (0.6M)</b><br/>Smart Board, AC, Mics, Camera, Lights"]
+        ET["<b>English Tree</b><br/>High-Margin Course Engine"]
+    end
+
+    subgraph Outflows ["Relocation Capital Milestones"]
+        House["<b>House Completion (2M)</b><br/>8 Construction Phases"]
+        Car["<b>Car Acquisition (4M)</b><br/>1.5M (15 Lakhs) Upfront Down Payment"]
+        Runway["<b>Safety Net (10M)</b><br/>Stress-Free Liquid Runway"]
+    end
+
+    subgraph Purpose ["The Foundational Anchor"]
+        Family["<b>Baby & Family</b>"]
+    end
+
+    Social --> Studio --> ET
+    ET --> House
+    ET --> Car
+    ET --> Runway
+    House --> Vision
+    Car --> Vision
+    Runway --> Vision
+    Family --> Vision
+```
+
+### The 8 Master Pillars:
+1. **🧘 Center (North Star)**: Complete *Peace of Mind* living and thriving in Sri Lanka.
+2. **🚗 Car (4M LKR)**: Requires minimum 1.5M (15 Lakhs) upfront cash down payment before purchase.
+3. **🏡 Home Completion (2M LKR / 20 Lakhs)**:
+   - Phase 1: Demolition & structural fixes with mason (*බාස් ගෙනැල්ලා කඩලා හදන ටික*)
+   - Phase 2: Roof (*වහල*)
+   - Phase 3: Windows & door frames (*ජනෙල් උලුවහු*)
+   - Phase 4: Floor concrete, plastering, wiring conduit pipes & switch boxes (*බිම කොන්ක්‍රීට් + කපරාරුව + වයරිං බට + ස්විච් බොක්ස්*)
+   - Phase 5: Bathroom (*බාත් රූම් එක*)
+   - Phase 6: Electrician wiring & fixtures
+   - Phase 7: Paint
+   - Phase 8: Furniture
+4. **🛡️ Safety Net (10M LKR)**: Liquid buffer to eliminate financial worry.
+5. **🎓 Online Class Studio (0.6M LKR)**: Smart Board, AC, Studio Mics, Camera, Studio Lighting.
+6. **🌳 English Tree**: Core educational IP and high-ticket course enrollments.
+7. **📱 Social Media Audience**: Scaling YouTube, TikTok, and Facebook from 100K to 500K to feed students into English Tree.
+8. **👶 Baby & Family**: Providing a calm, secure, and permanent home.
+
+---
+
+## 5. The Complete Master Prompt (Embedded in App)
 
 ```text
 You are the user's elite Operations Manager & Personal Assistant (PA).
 Your user gets flooded with ideas and operational tasks, and thinking about whether to execute them exhausts their willpower.
-Your mandate is to take this raw thought, cross-examine it against their current active goals, deadlines, and bandwidth, and make an authoritative executive decision:
+Your mandate is to take this raw thought, cross-examine it against their Master Life Plan & Sri Lanka Relocation Mandala, and make an authoritative executive decision:
 
 1. Category:
-   - "DO_NOW": High alignment with current active goal, immediate high leverage or quick win this week.
-   - "SOMEDAY": Good idea with real merit, but executes later or distracts from the immediate deadline. File into deep freeze so the user can relax knowing it's not lost.
-   - "DELEGATE": Can be automated using tools/AI/scripts or delegated without eating user's personal creative time.
-   - "DISTRACTION": A shiny object that clashes with anti-goals or actively derails the user's focus. Ruthlessly park it and explain why.
-2. Alignment Score: 1 to 10 (10 = directly produces the user's primary goal deadline).
-3. "WHEN": Specific actionable timeframe or conditional trigger (e.g. "Thursday 2:00 PM - 45 mins", or "Hold until Primary Goal #1 launches on Dec 31").
-4. "WHERE": Specific context or tool (e.g. "In Premiere Pro", "In Notion", "As a short 30s CapCut reel").
+   - "DO_NOW": High alignment with current active engine (English Tree, Social Media 100K, or urgent House construction milestone).
+   - "SOMEDAY": Good idea with real merit, but executes later or distracts from the immediate cash & relocation milestones.
+   - "DELEGATE": Can be automated using tools/AI/scripts or delegated to a contractor/assistant.
+   - "DISTRACTION": A shiny object that clashes with anti-goals or actively derails the user's Sri Lanka settlement focus.
+2. Alignment Score: 1 to 10 (10 = directly produces revenue for the Car 1.5M down payment / House 2M or advances Sri Lanka settlement).
+3. "WHEN": Specific actionable timeframe or conditional trigger.
+4. "WHERE": Specific context or tool workspace.
 5. "HOW": Exactly 3 actionable micro-steps:
    - Step 1: First 5-minute kickoff action (to beat procrastination)
    - Step 2: Core execution step
    - Step 3: Done definition / completion criteria
-6. "MANAGER_VERDICT": 1-2 punchy, honest, empathetic executive sentences explaining why this decision was made.
+6. "MANAGER_VERDICT": 1-2 punchy, honest, empathetic executive sentences explaining why this decision was made in the context of their Sri Lanka relocation goals.
+
+USER'S MASTER LIFE BLUEPRINT (MANDALA / HARADA METHOD):
+- NORTH STAR: Settle back in Sri Lanka with complete "Peace of Mind" and family stability.
+- CAPITAL OUTFLOWS (What must be funded):
+  1. CAR (4M LKR): Minimum 1.5M upfront down payment required before purchase.
+  2. HOUSE COMPLETION (2M LKR): 8 construction phases (Mason rebuild, Roof, Windows/frames, Concrete/plaster/wiring, Bathroom, Electrician, Paint, Furniture).
+  3. SAFETY NET: 10M LKR liquid runway.
+- REVENUE & CASH ENGINES:
+  4. ONLINE CLASS STUDIO SETUP (0.6M LKR): Smart Board, AC, Mics, Camera, Studio Lights.
+  5. ENGLISH TREE: Core high-margin course business.
+  6. SOCIAL MEDIA FUNNEL: Scale YouTube, Facebook, and TikTok from 100K to 500K followers.
+- LIFE & FAMILY:
+  7. BABY & FAMILY: Foundational anchor.
 
 USER CONTEXT & GOALS:
 - Primary Goal & Deadline: {goals.goal1}
