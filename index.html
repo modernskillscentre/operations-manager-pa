@@ -299,11 +299,79 @@
       </div>
     </div>
 
+    <!-- 2.5. EXECUTIVE MILESTONE TRACKER (PHASE 1 RELOCATION TRIO) -->
+    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141418] shadow-sm p-4 space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <h3 class="text-xs font-bold font-mono tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
+            Phase 1 Relocation Milestones (Bootstrap Mode)
+          </h3>
+        </div>
+        <button id="btn-open-metrics" type="button" class="text-[11px] font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 flex items-center gap-1 transition">
+          <i data-lucide="sliders" class="w-3 h-3"></i> Update Baseline
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+        <!-- 1. Car Down Payment -->
+        <div class="p-3 rounded-lg bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200/70 dark:border-zinc-800/80 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+              🚗 Car Down Payment
+            </span>
+            <span id="metric-car-pct" class="text-emerald-600 dark:text-emerald-400 font-bold">0%</span>
+          </div>
+          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+            <div id="bar-metric-car" class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500">
+            <span id="metric-car-current">Rs. 0</span>
+            <span>Target: 1.5M LKR</span>
+          </div>
+        </div>
+
+        <!-- 2. House Completion -->
+        <div class="p-3 rounded-lg bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200/70 dark:border-zinc-800/80 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+              🏡 House Completion
+            </span>
+            <span id="metric-house-pct" class="text-blue-600 dark:text-blue-400 font-bold">0%</span>
+          </div>
+          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+            <div id="bar-metric-house" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500">
+            <span id="metric-house-current">Rs. 0</span>
+            <span>Target: 2.0M LKR</span>
+          </div>
+        </div>
+
+        <!-- 3. TikTok Audience Growth -->
+        <div class="p-3 rounded-lg bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200/70 dark:border-zinc-800/80 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+              📱 TikTok Cash Engine
+            </span>
+            <span id="metric-tiktok-pct" class="text-amber-600 dark:text-amber-400 font-bold">28.5%</span>
+          </div>
+          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+            <div id="bar-metric-tiktok" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 28.5%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500">
+            <span id="metric-tiktok-current">28,500</span>
+            <span id="metric-social-subs">Target: 100K (FB: 245 • YT: 145)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 3. TRIAGE BOARD FILTER CONTROLS -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
       <div class="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar text-xs">
         <button data-filter="all" class="tab-btn active px-3 py-1.5 rounded-lg font-semibold bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 transition font-mono text-[11px]">
-          All (<span id="count-all">0</span>)
+          Active (<span id="count-all">0</span>)
         </button>
         <button data-filter="DO_NOW" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-emerald-700 dark:text-emerald-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px]">
           Do Now (<span id="count-donow">0</span>)
@@ -316,6 +384,9 @@
         </button>
         <button data-filter="DISTRACTION" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-rose-700 dark:text-rose-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px]">
           Parked (<span id="count-distraction">0</span>)
+        </button>
+        <button data-filter="COMPLETED" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-amber-700 dark:text-amber-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px] flex items-center gap-1.5">
+          <i data-lucide="trophy" class="w-3.5 h-3.5 text-amber-500"></i> Done & Wins (<span id="count-completed">0</span>)
         </button>
       </div>
 
@@ -492,6 +563,84 @@
         <span class="text-[11px] text-zinc-400 font-mono">Changes sync automatically across paired devices</span>
         <button id="btn-save-goals" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-lg font-semibold text-xs shadow-sm transition">
           Save Goals Profile
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: METRICS & BASELINE TRACKER -->
+  <div id="modal-metrics" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#141418] border border-zinc-200 dark:border-zinc-800 rounded-xl max-w-md w-full p-5 sm:p-6 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+          <div>
+            <h2 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Update Baseline & Progress</h2>
+            <p class="text-[11px] text-zinc-500">Track your cash and social audience traction</p>
+          </div>
+        </div>
+        <button id="btn-close-metrics" type="button" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🚗 CAR DOWN PAYMENT SAVED (LKR)</label>
+          <input 
+            id="input-metric-car" 
+            type="number" 
+            placeholder="0" 
+            class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 font-mono text-xs outline-none focus:border-zinc-400"
+          >
+          <span class="text-[10px] text-zinc-400 font-mono">Target: 1,500,000 LKR (15 Lakhs upfront deposit)</span>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[11px]">🏡 HOUSE COMPLETION SAVED (LKR)</label>
+          <input 
+            id="input-metric-house" 
+            type="number" 
+            placeholder="0" 
+            class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 font-mono text-xs outline-none focus:border-zinc-400"
+          >
+          <span class="text-[10px] text-zinc-400 font-mono">Target: 2,000,000 LKR (20 Lakhs total completion)</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[10px]">TIKTOK</label>
+            <input 
+              id="input-metric-tiktok" 
+              type="number" 
+              placeholder="28500" 
+              class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2 text-zinc-900 dark:text-zinc-100 font-mono text-xs outline-none focus:border-zinc-400"
+            >
+          </div>
+          <div>
+            <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[10px]">FACEBOOK</label>
+            <input 
+              id="input-metric-fb" 
+              type="number" 
+              placeholder="245" 
+              class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2 text-zinc-900 dark:text-zinc-100 font-mono text-xs outline-none focus:border-zinc-400"
+            >
+          </div>
+          <div>
+            <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1 font-mono text-[10px]">YOUTUBE</label>
+            <input 
+              id="input-metric-yt" 
+              type="number" 
+              placeholder="145" 
+              class="w-full bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-lg p-2 text-zinc-900 dark:text-zinc-100 font-mono text-xs outline-none focus:border-zinc-400"
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800">
+        <button id="btn-save-metrics" type="button" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-lg font-semibold text-xs shadow-sm transition">
+          Update Progress
         </button>
       </div>
     </div>
@@ -680,6 +829,19 @@
     const STORAGE_KEY_GOALS = 'brain_dump_goals_v1';
     const STORAGE_KEY_SETTINGS = 'brain_dump_settings_v1';
     const STORAGE_KEY_FOCUS = 'brain_dump_focus_v1';
+    const STORAGE_KEY_METRICS = 'brain_dump_metrics_v1';
+
+    const DEFAULT_METRICS = {
+      savedCar: 0,
+      targetCar: 1500000,
+      savedHouse: 0,
+      targetHouse: 2000000,
+      tiktokFollowers: 28500,
+      targetTiktok: 100000,
+      fbFollowers: 245,
+      ytFollowers: 145
+    };
+    let metrics = JSON.parse(localStorage.getItem(STORAGE_KEY_METRICS) || JSON.stringify(DEFAULT_METRICS));
 
     const SRI_LANKA_MANDALA_PRESET = {
       goal1: "Settle in Sri Lanka with Peace of Mind: Finish House (2M LKR) & Buy Car (4M LKR, 1.5M upfront down payment)",
@@ -767,6 +929,7 @@
       checkUrlPairing();
       lucide.createIcons();
       updateGoalsPreview();
+      renderMetrics();
       setupSpeechRecognition();
       renderIdeas();
       initFocusTracker();
@@ -793,6 +956,72 @@
         previewGoalText.className = "truncate text-zinc-700 dark:text-zinc-300 text-xs font-medium";
         goalsStatusBadge.className = 'w-2 h-2 rounded-full bg-emerald-500';
       }
+    }
+
+    // --- PHASE 1 METRICS & MILESTONE TRACKER ---
+    function renderMetrics() {
+      const savedCar = Number(metrics.savedCar) || 0;
+      const targetCar = Number(metrics.targetCar) || 1500000;
+      const carPct = Math.min(100, Math.round((savedCar / targetCar) * 100));
+
+      const savedHouse = Number(metrics.savedHouse) || 0;
+      const targetHouse = Number(metrics.targetHouse) || 2000000;
+      const housePct = Math.min(100, Math.round((savedHouse / targetHouse) * 100));
+
+      const tiktokFollowers = Number(metrics.tiktokFollowers) || 28500;
+      const targetTiktok = Number(metrics.targetTiktok) || 100000;
+      const tiktokPct = Math.min(100, Math.round((tiktokFollowers / targetTiktok) * 100 * 10) / 10);
+
+      const elCarPct = document.getElementById('metric-car-pct');
+      const elBarCar = document.getElementById('bar-metric-car');
+      const elCarCurrent = document.getElementById('metric-car-current');
+      if (elCarPct) elCarPct.textContent = `${carPct}%`;
+      if (elBarCar) elBarCar.style.width = `${carPct}%`;
+      if (elCarCurrent) elCarCurrent.textContent = `Rs. ${savedCar.toLocaleString()}`;
+
+      const elHousePct = document.getElementById('metric-house-pct');
+      const elBarHouse = document.getElementById('bar-metric-house');
+      const elHouseCurrent = document.getElementById('metric-house-current');
+      if (elHousePct) elHousePct.textContent = `${housePct}%`;
+      if (elBarHouse) elBarHouse.style.width = `${housePct}%`;
+      if (elHouseCurrent) elHouseCurrent.textContent = `Rs. ${savedHouse.toLocaleString()}`;
+
+      const elTiktokPct = document.getElementById('metric-tiktok-pct');
+      const elBarTiktok = document.getElementById('bar-metric-tiktok');
+      const elTiktokCurrent = document.getElementById('metric-tiktok-current');
+      const elSocialSubs = document.getElementById('metric-social-subs');
+      if (elTiktokPct) elTiktokPct.textContent = `${tiktokPct}%`;
+      if (elBarTiktok) elBarTiktok.style.width = `${tiktokPct}%`;
+      if (elTiktokCurrent) elTiktokCurrent.textContent = `${tiktokFollowers.toLocaleString()}`;
+      if (elSocialSubs) elSocialSubs.textContent = `Target: 100K (FB: ${metrics.fbFollowers || 245} • YT: ${metrics.ytFollowers || 145})`;
+    }
+
+    function openMetricsModal() {
+      const modal = document.getElementById('modal-metrics');
+      if (!modal) return;
+      document.getElementById('input-metric-car').value = metrics.savedCar || 0;
+      document.getElementById('input-metric-house').value = metrics.savedHouse || 0;
+      document.getElementById('input-metric-tiktok').value = metrics.tiktokFollowers || 28500;
+      document.getElementById('input-metric-fb').value = metrics.fbFollowers || 245;
+      document.getElementById('input-metric-yt').value = metrics.ytFollowers || 145;
+      modal.classList.remove('hidden');
+    }
+
+    function closeMetricsModal() {
+      const modal = document.getElementById('modal-metrics');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveMetricsModal() {
+      metrics.savedCar = Math.max(0, parseInt(document.getElementById('input-metric-car').value || 0, 10));
+      metrics.savedHouse = Math.max(0, parseInt(document.getElementById('input-metric-house').value || 0, 10));
+      metrics.tiktokFollowers = Math.max(0, parseInt(document.getElementById('input-metric-tiktok').value || 28500, 10));
+      metrics.fbFollowers = Math.max(0, parseInt(document.getElementById('input-metric-fb').value || 245, 10));
+      metrics.ytFollowers = Math.max(0, parseInt(document.getElementById('input-metric-yt').value || 145, 10));
+      localStorage.setItem(STORAGE_KEY_METRICS, JSON.stringify(metrics));
+      renderMetrics();
+      closeMetricsModal();
+      cloudPush('save_metrics', { metrics });
     }
 
     // --- 1-CLICK EXCEL (.XLSX) EXPORT (SHEETJS) ---
@@ -1430,15 +1659,7 @@ USER'S MASTER LIFE BLUEPRINT (MANDALA / HARADA METHOD):
 - NORTH STAR: Settle back in Sri Lanka with complete "Peace of Mind" and family stability.
 - CAPITAL OUTFLOWS (What must be funded):
   1. CAR (4M LKR): Requires minimum 1.5M (15 Lakhs) upfront down payment before purchase.
-  2. HOUSE COMPLETION (2M LKR / 20 Lakhs): 8 specific construction phases:
-     - Phase 1: Demolition & structural rebuild with mason (බාස් ගෙනැල්ලා කඩලා හදන ටික)
-     - Phase 2: Roof (වහල)
-     - Phase 3: Windows & door frames (ජනෙල් උලුවහු)
-     - Phase 4: Floor concrete, plastering, wiring conduit pipes & switch boxes (බිම කොන්ක්‍රීට් + කපරාරුව + වයරිං බට + ස්විච් බොක්ස්)
-     - Phase 5: Bathroom (බාත් රූම් එක)
-     - Phase 6: Electrician wiring & fixtures
-     - Phase 7: Paint
-     - Phase 8: Furniture
+  2. HOUSE COMPLETION (2M LKR / 20 Lakhs): 8 specific construction phases (Mason rebuild, Roof, Windows/frames, Concrete/plaster/wiring, Bathroom, Electrician, Paint, Furniture).
   3. SAFETY NET: 10M LKR liquid runway to guarantee peace of mind.
 - REVENUE & CASH ENGINES (How the money is generated):
   4. ONLINE CLASS STUDIO SETUP (0.6M LKR): Smart Board, AC, Mics, Camera, Studio Lights.
@@ -1446,6 +1667,23 @@ USER'S MASTER LIFE BLUEPRINT (MANDALA / HARADA METHOD):
   6. SOCIAL MEDIA AUDIENCE FUNNEL: Grow YouTube, Facebook, and TikTok from 100K to 500K followers to feed enrolled students into English Tree & Online Classes.
 - LIFE & FAMILY:
   7. BABY & FAMILY: The foundational "Why" behind returning to Sri Lanka.
+
+CURRENT FINANCIAL & TRACTION REALITY (BOOTSTRAP PHASE 1):
+- CASH CURRENTLY SAVED: Rs. ${(metrics.savedCar || 0) + (metrics.savedHouse || 0)} (Cash is currently tight - enforce strict zero-capital execution)
+- CURRENT AUDIENCE TRACTION:
+  * TikTok: ${metrics.tiktokFollowers || 28500} followers (This is the user's #1 distribution engine right now! Prioritize monetizing this audience with zero-cost workshops & cohorts)
+  * Facebook: ${metrics.fbFollowers || 245} followers | YouTube: ${metrics.ytFollowers || 145} subscribers (Early seed stage)
+
+PHASE 1 EXECUTION PRIORITIES (Ignore Phase 2 10M Safety Net & Studio Upgrades for now):
+1. CAR DOWN PAYMENT: 1.5M LKR upfront cash.
+2. HOUSE COMPLETION: 2.0M LKR (8 construction phases).
+3. TIKTOK FAST-CASH ENGINE: Convert 28.5K audience into paying English Tree / online students to fund the 1.5M car deposit + 2M house.
+
+STRICT ZERO-CAPITAL BOOTSTRAP GUARDRAILS:
+- The user has minimal spare cash right now.
+- NEVER recommend buying expensive gear, software subscriptions, paid ads, or hiring agencies.
+- Mandate 100% zero-cost execution: Phone camera, natural light, free CapCut, WhatsApp/Zoom cohorts.
+- High priority to ideas that generate cash FAST from the existing 28.5K TikTok audience.
 
 USER'S IMMEDIATE CONSTRAINTS:
 - Primary Goal: ${goals.goal1 || "Settle in Sri Lanka: Finish House (2M LKR) & Car (1.5M Down)"}
@@ -1554,15 +1792,22 @@ Respond STRICTLY in valid JSON matching this schema:
       document.getElementById('count-someday').textContent = ideas.filter(i => i.category === 'SOMEDAY' && !i.completed).length;
       document.getElementById('count-delegate').textContent = ideas.filter(i => i.category === 'DELEGATE' && !i.completed).length;
       document.getElementById('count-distraction').textContent = ideas.filter(i => i.category === 'DISTRACTION' && !i.completed).length;
+      const countCompleted = document.getElementById('count-completed');
+      if (countCompleted) countCompleted.textContent = ideas.filter(i => !!i.completed).length;
     }
 
     function renderIdeas() {
       updateCounts();
 
       let filtered = ideas.filter(idea => {
-        if (currentFilter !== 'all') {
-          if (idea.category !== currentFilter) return false;
+        if (currentFilter === 'COMPLETED') {
+          if (!idea.completed) return false;
+        } else {
+          // In active triage views, hide completed tasks so your active inbox stays clean
+          if (idea.completed) return false;
+          if (currentFilter !== 'all' && idea.category !== currentFilter) return false;
         }
+
         if (searchQuery) {
           const q = searchQuery.toLowerCase();
           const matchTitle = (idea.title || '').toLowerCase().includes(q);
@@ -1576,13 +1821,39 @@ Respond STRICTLY in valid JSON matching this schema:
       ideasList.innerHTML = '';
 
       if (filtered.length === 0) {
-        emptyState.classList.remove('hidden');
-        ideasList.appendChild(emptyState);
+        if (currentFilter === 'COMPLETED') {
+          ideasList.innerHTML = `
+            <div class="text-center py-14 px-4 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-800 bg-white/50 dark:bg-transparent">
+              <div class="w-10 h-10 mx-auto rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-2.5">
+                <i data-lucide="trophy" class="w-5 h-5"></i>
+              </div>
+              <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-200">No completed tasks yet</h3>
+              <p class="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto mt-1">
+                When you finish an operational task, check it off. Completed tasks live here as your personal trophy room of progress!
+              </p>
+            </div>
+          `;
+        } else {
+          emptyState.classList.remove('hidden');
+          ideasList.appendChild(emptyState);
+        }
         lucide.createIcons();
         return;
       }
 
       emptyState.classList.add('hidden');
+
+      if (currentFilter === 'COMPLETED') {
+        const trophyBanner = document.createElement('div');
+        trophyBanner.className = 'p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-between text-xs font-mono text-amber-800 dark:text-amber-300 mb-1';
+        trophyBanner.innerHTML = `
+          <div class="flex items-center gap-2">
+            <i data-lucide="award" class="w-4 h-4 text-amber-600 shrink-0"></i>
+            <span><strong>Trophy Room:</strong> You have conquered ${filtered.length} operational milestones! When energy is low, look here to remember your momentum.</span>
+          </div>
+        `;
+        ideasList.appendChild(trophyBanner);
+      }
 
       filtered.forEach(idea => {
         const card = createIdeaCard(idea);
@@ -1620,6 +1891,13 @@ Respond STRICTLY in valid JSON matching this schema:
         borderAccent = 'border-l-4 border-l-rose-600 dark:border-l-rose-500';
       }
 
+      if (idea.completed) {
+        categoryBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-700/80 flex items-center gap-1">
+          <i data-lucide="trophy" class="w-3 h-3 text-amber-500"></i> CONQUERED
+        </span>`;
+        borderAccent = 'border-l-4 border-l-amber-500 dark:border-l-amber-400';
+      }
+
       if (isCurrentFocus) {
         borderAccent += ' ring-1 ring-emerald-500';
       }
@@ -1627,7 +1905,7 @@ Respond STRICTLY in valid JSON matching this schema:
       const card = document.createElement('div');
       card.className = `rounded-xl border transition-all p-4 relative ${borderAccent} ${
         idea.completed 
-          ? 'bg-zinc-50 dark:bg-[#0c0c0e] border-zinc-200 dark:border-zinc-800/50 opacity-60' 
+          ? 'bg-amber-50/10 dark:bg-[#0e0e0a] border-amber-200/50 dark:border-amber-900/30' 
           : 'bg-white dark:bg-[#141418] border-zinc-200 dark:border-zinc-800 shadow-sm'
       }`;
 
@@ -1728,6 +2006,9 @@ Respond STRICTLY in valid JSON matching this schema:
 
       card.querySelector('.btn-toggle-complete').addEventListener('click', () => {
         idea.completed = !idea.completed;
+        if (idea.completed) {
+          idea.completed_at = new Date().toISOString();
+        }
         saveIdeas();
         renderIdeas();
         cloudPush('update_idea', { idea });
@@ -1964,6 +2245,11 @@ Respond STRICTLY in valid JSON matching this schema:
         inputAntigoals.value = SRI_LANKA_MANDALA_PRESET.antigoals;
         inputTools.value = SRI_LANKA_MANDALA_PRESET.tools;
       });
+
+      // Metrics modal
+      document.getElementById('btn-open-metrics')?.addEventListener('click', openMetricsModal);
+      document.getElementById('btn-close-metrics')?.addEventListener('click', closeMetricsModal);
+      document.getElementById('btn-save-metrics')?.addEventListener('click', saveMetricsModal);
 
       // Settings modal
       document.getElementById('btn-open-settings').addEventListener('click', openSettingsModal);

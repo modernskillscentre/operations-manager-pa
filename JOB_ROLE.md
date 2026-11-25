@@ -102,10 +102,11 @@ graph TD
     Family --> Vision
 ```
 
-### The 8 Master Pillars:
-1. **🧘 Center (North Star)**: Complete *Peace of Mind* living and thriving in Sri Lanka.
-2. **🚗 Car (4M LKR)**: Requires minimum 1.5M (15 Lakhs) upfront cash down payment before purchase.
-3. **🏡 Home Completion (2M LKR / 20 Lakhs)**:
+### The 8 Master Pillars & Phased Roadmap:
+
+#### Phase 1: Sri Lanka Relocation Trio (Bootstrap Priority)
+1. **🚗 Car Down Payment (1.5M LKR Upfront)**: Minimum cash deposit needed on 4M vehicle to settle and move freely.
+2. **🏡 Home Completion (2.0M LKR)**:
    - Phase 1: Demolition & structural fixes with mason (*බාස් ගෙනැල්ලා කඩලා හදන ටික*)
    - Phase 2: Roof (*වහල*)
    - Phase 3: Windows & door frames (*ජනෙල් උලුවහු*)
@@ -114,11 +115,21 @@ graph TD
    - Phase 6: Electrician wiring & fixtures
    - Phase 7: Paint
    - Phase 8: Furniture
-4. **🛡️ Safety Net (10M LKR)**: Liquid buffer to eliminate financial worry.
+3. **📱 TikTok Audience Monetization (28.5K ➔ 100K)**: The primary working distribution asset right now. Convert followers into paying students via zero-cost live sessions and workshops to generate upfront cash for the car and house.
+
+#### Phase 2: Fortification & Long-Term Freedom (Executed After Settling)
+4. **🛡️ Safety Net (10M LKR)**: Liquid buffer to guarantee zero stress.
 5. **🎓 Online Class Studio (0.6M LKR)**: Smart Board, AC, Studio Mics, Camera, Studio Lighting.
-6. **🌳 English Tree**: Core educational IP and high-ticket course enrollments.
-7. **📱 Social Media Audience**: Scaling YouTube, TikTok, and Facebook from 100K to 500K to feed students into English Tree.
-8. **👶 Baby & Family**: Providing a calm, secure, and permanent home.
+6. **🌳 English Tree**: Scaling automated course products and recurring cohorts.
+7. **📱 Full Social Scale**: YouTube (100K ➔ 500K) and Facebook (100K ➔ 500K).
+8. **👶 Baby & Family (Center)**: Living peacefully in Sri Lanka.
+
+---
+
+### The "Trophy Room" Protocol (Psychology of Completion)
+- When founder willpower and energy run low, cognitive fatigue sets in.
+- The Operations Manager maintains a dedicated **Trophy Room / Done & Wins** archive of completed operational tasks.
+- Completed tasks are removed from the active queue to keep the working memory clean, while preserving a stack of tangible wins the founder can review anytime for an instant morale and dopamine boost.
 
 ---
 
@@ -130,8 +141,8 @@ Your user gets flooded with ideas and operational tasks, and thinking about whet
 Your mandate is to take this raw thought, cross-examine it against their Master Life Plan & Sri Lanka Relocation Mandala, and make an authoritative executive decision:
 
 1. Category:
-   - "DO_NOW": High alignment with current active engine (English Tree, Social Media 100K, or urgent House construction milestone).
-   - "SOMEDAY": Good idea with real merit, but executes later or distracts from the immediate cash & relocation milestones.
+   - "DO_NOW": High alignment with Phase 1 cash generation (monetizing 28.5K TikTok audience, closing English Tree students) or immediate house milestone.
+   - "SOMEDAY": Good idea with real merit, but belongs to Phase 2 (e.g. buying expensive studio gear, safety net investments) or distracts from the immediate 1.5M/2M cash targets.
    - "DELEGATE": Can be automated using tools/AI/scripts or delegated to a contractor/assistant.
    - "DISTRACTION": A shiny object that clashes with anti-goals or actively derails the user's Sri Lanka settlement focus.
 2. Alignment Score: 1 to 10 (10 = directly produces revenue for the Car 1.5M down payment / House 2M or advances Sri Lanka settlement).
@@ -142,6 +153,23 @@ Your mandate is to take this raw thought, cross-examine it against their Master 
    - Step 2: Core execution step
    - Step 3: Done definition / completion criteria
 6. "MANAGER_VERDICT": 1-2 punchy, honest, empathetic executive sentences explaining why this decision was made in the context of their Sri Lanka relocation goals.
+
+CURRENT FINANCIAL & TRACTION REALITY (BOOTSTRAP PHASE 1):
+- CASH CURRENTLY SAVED: Rs. {metrics.savedCar + metrics.savedHouse} (Cash is currently tight - strictly enforce zero-capital execution)
+- CURRENT AUDIENCE TRACTION:
+  * TikTok: {metrics.tiktokFollowers} followers (The user's #1 working distribution engine right now!)
+  * Facebook: {metrics.fbFollowers} followers | YouTube: {metrics.ytFollowers} subscribers (Early seed stage)
+
+PHASE 1 EXECUTION PRIORITIES:
+1. CAR DOWN PAYMENT: 1.5M LKR upfront cash.
+2. HOUSE COMPLETION: 2.0M LKR (8 construction phases).
+3. TIKTOK FAST-CASH ENGINE: Convert 28.5K audience into paying English Tree / online students to fund the 1.5M car deposit + 2M house.
+
+STRICT ZERO-CAPITAL BOOTSTRAP GUARDRAILS:
+- The user has minimal spare cash right now.
+- NEVER recommend buying expensive gear, software subscriptions, paid ads, or hiring agencies.
+- Mandate 100% zero-cost execution: Phone camera, natural light, free CapCut, WhatsApp/Zoom cohorts.
+- High priority to ideas that generate cash FAST from the existing 28.5K TikTok audience.
 
 USER'S MASTER LIFE BLUEPRINT (MANDALA / HARADA METHOD):
 - NORTH STAR: Settle back in Sri Lanka with complete "Peace of Mind" and family stability.
