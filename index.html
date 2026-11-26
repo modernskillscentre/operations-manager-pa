@@ -1488,9 +1488,36 @@ create policy "Allow all state" on app_state for all using (true) with check (tr
     }
 
     // --- INITIALIZATION ---
+    async function loadServerConfig() {
+      try {
+        const resp = await fetch('/api/config');
+        if (resp.ok) {
+          const cfg = await resp.json();
+          let shouldReinit = false;
+          if (cfg.supabaseUrl && cfg.supabaseUrl !== settings.supabaseUrl) {
+            settings.supabaseUrl = cfg.supabaseUrl;
+            shouldReinit = true;
+          }
+          if (cfg.supabaseKey && cfg.supabaseKey !== settings.supabaseKey) {
+            settings.supabaseKey = cfg.supabaseKey;
+            shouldReinit = true;
+          }
+          if (shouldReinit) {
+            localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+            if (inputSupabaseUrl) inputSupabaseUrl.value = settings.supabaseUrl;
+            if (inputSupabaseKey) inputSupabaseKey.value = settings.supabaseKey;
+            initSupabase();
+          }
+        }
+      } catch (e) {
+        // Running locally or offline
+      }
+    }
+
     function init() {
       initPinLock();
       checkUrlPairing();
+      loadServerConfig();
       initSupabase();
       lucide.createIcons();
       updateThemeUI(document.documentElement.classList.contains('dark'));
