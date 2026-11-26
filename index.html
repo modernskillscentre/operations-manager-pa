@@ -50,26 +50,133 @@
   </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
     
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      -webkit-tap-highlight-color: transparent;
+    /* === PURE CSS DAY / NIGHT THEME ENGINE (100% RELIABLE) === */
+    :root {
+      --bg-canvas: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-hover: #e2e8f0;
+      --border-main: #e2e8f0;
+      --border-subtle: #cbd5e1;
+      --text-main: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --input-bg: #ffffff;
+      --navbar-bg: rgba(255, 255, 255, 0.96);
+      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
     }
     
+    html.dark {
+      --bg-canvas: #090a0f;
+      --bg-surface: #12141c;
+      --bg-subtle: #181b26;
+      --bg-hover: #222636;
+      --border-main: #232738;
+      --border-subtle: #2e344a;
+      --text-main: #f8fafc;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --input-bg: #141620;
+      --navbar-bg: rgba(18, 20, 28, 0.96);
+      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      background-color: var(--bg-canvas) !important;
+      color: var(--text-main) !important;
+      font-size: 15px !important;
+      line-height: 1.6 !important;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    /* Direct surface & card theming */
+    header, 
+    #pin-lock-overlay, 
+    .bg-white, 
+    .dark\:bg-\[\#141418\], 
+    .dark\:bg-\[\#111114\], 
+    .dark\:bg-\[\#09090b\] {
+      background-color: var(--bg-surface) !important;
+      color: var(--text-main) !important;
+    }
+
+    header {
+      background-color: var(--navbar-bg) !important;
+      border-color: var(--border-main) !important;
+    }
+
+    .bg-zinc-50, 
+    .dark\:bg-\[\#0c0c0e\] {
+      background-color: var(--bg-subtle) !important;
+      color: var(--text-main) !important;
+    }
+
+    .border-zinc-200, 
+    .dark\:border-zinc-800, 
+    .border-zinc-200\/70, 
+    .dark\:border-zinc-800\/80,
+    .border-zinc-100 {
+      border-color: var(--border-main) !important;
+    }
+
+    .text-zinc-900, 
+    .dark\:text-zinc-100 {
+      color: var(--text-main) !important;
+    }
+
+    .text-zinc-800, 
+    .dark\:text-zinc-200,
+    .text-zinc-700, 
+    .dark\:text-zinc-300 {
+      color: var(--text-body) !important;
+    }
+
+    .text-zinc-500, 
+    .dark\:text-zinc-400 {
+      color: var(--text-muted) !important;
+    }
+
+    input, textarea, select {
+      background-color: var(--input-bg) !important;
+      color: var(--text-main) !important;
+      border-color: var(--border-main) !important;
+    }
+
+    /* Human-Readable Typography Scaling */
+    .text-\[9px\], .text-\[10px\], .text-\[11px\] {
+      font-size: 13px !important;
+      line-height: 1.4 !important;
+    }
+    .text-xs {
+      font-size: 13.5px !important;
+      line-height: 1.45 !important;
+    }
+    .text-sm {
+      font-size: 15px !important;
+      line-height: 1.55 !important;
+    }
+    .text-base {
+      font-size: 16.5px !important;
+      line-height: 1.6 !important;
+    }
+
     .custom-scrollbar::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
       background: transparent;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(150, 150, 150, 0.2);
+      background: rgba(150, 150, 150, 0.25);
       border-radius: 999px;
     }
     .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.16);
     }
 
     @keyframes shake {
@@ -79,24 +186,6 @@
     }
     .animate-shake {
       animation: shake 0.35s ease-in-out;
-    }
-
-    /* Core Day/Night Fallback Variables */
-    :root {
-      --bg-page: #f4f4f5;
-      --text-page: #18181b;
-      --bg-card: #ffffff;
-      --border-card: #e4e4e7;
-    }
-    html.dark {
-      --bg-page: #0c0c0e;
-      --text-page: #f4f4f5;
-      --bg-card: #141418;
-      --border-card: #27272a;
-    }
-    body {
-      background-color: var(--bg-page);
-      color: var(--text-page);
     }
   </style>
 </head>
@@ -163,71 +252,77 @@
   </div>
 
   <!-- TOP NAVBAR -->
-  <header class="sticky top-0 z-40 bg-white/90 dark:bg-[#111114]/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80 px-4 py-2.5 sm:px-6 transition-colors">
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#111114]/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80 px-4 py-3 sm:px-6 transition-colors">
     <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
       
       <!-- Brand Title -->
-      <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 flex items-center justify-center font-bold text-sm shadow-sm transition-colors">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 flex items-center justify-center font-bold text-sm shadow-sm transition-colors shrink-0">
           OM
         </div>
         <div>
-          <div class="flex items-center gap-1.5">
-            <h1 class="text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
               Operations Manager
             </h1>
-            <span class="text-[10px] tracking-wider uppercase font-mono font-semibold px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700">PA</span>
+            <span class="text-xs tracking-wider uppercase font-mono font-bold px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-800 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700">PA</span>
           </div>
-          <p class="text-[11px] text-zinc-500 dark:text-zinc-400 hidden sm:block">Executive Triage & Task Gatekeeper</p>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 hidden sm:block font-medium">Executive Triage & Task Gatekeeper</p>
         </div>
       </div>
 
       <!-- Action Utilities Bar -->
-      <div class="flex items-center gap-1.5">
+      <div class="flex items-center gap-2">
+        <!-- Phone <-> PC Transfer -->
+        <button id="btn-open-transfer" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-xs hover:opacity-90 transition active:scale-95" title="Transfer tasks between Phone and PC">
+          <i data-lucide="arrow-left-right" class="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600"></i>
+          <span class="hidden sm:inline">Phone ⇄ PC</span>
+        </button>
+
         <!-- Cloud Sync Status -->
-        <button id="btn-cloud-sync" class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Sync with Cloud (Google Sheets)">
-          <span id="cloud-sync-dot" class="w-2 h-2 rounded-full bg-zinc-400"></span>
-          <span id="cloud-sync-text" class="hidden sm:inline font-mono text-[11px]">Sync</span>
+        <button id="btn-cloud-sync" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Sync with Cloud (Google Sheets)">
+          <span id="cloud-sync-dot" class="w-2 h-2 rounded-full bg-amber-500"></span>
+          <span id="cloud-sync-text" class="hidden sm:inline font-mono text-xs">Local Mode</span>
         </button>
 
         <!-- Focus Timer Nav Pill -->
-        <button id="btn-nav-focus" class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="View Focus Task">
+        <button id="btn-nav-focus" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="View Focus Task">
           <i data-lucide="timer" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i>
-          <span class="hidden sm:inline font-mono text-[11px]">Focus</span>
-          <span id="nav-timer-pill" class="hidden font-mono px-1.5 py-0.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded text-[10px] font-semibold">25:00</span>
+          <span class="hidden sm:inline text-xs">Focus</span>
+          <span id="nav-timer-pill" class="hidden font-mono px-1.5 py-0.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded text-xs font-bold">25:00</span>
         </button>
 
         <!-- Excel Export -->
-        <button id="btn-quick-excel" class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Export to Excel (.xlsx)">
+        <button id="btn-quick-excel" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Export to Excel (.xlsx)">
           <i data-lucide="sheet" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i>
-          <span class="hidden sm:inline font-mono text-[11px]">Excel</span>
+          <span class="hidden sm:inline text-xs">Excel</span>
         </button>
 
         <!-- Goals Button -->
-        <button id="btn-open-goals" class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition">
+        <button id="btn-open-goals" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Strategic Relocation Goals">
           <i data-lucide="target" class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400"></i>
-          <span class="hidden sm:inline font-mono text-[11px]">Goals</span>
+          <span class="hidden sm:inline text-xs">Goals</span>
           <span id="goals-status-badge" class="w-2 h-2 rounded-full bg-amber-500"></span>
         </button>
 
         <!-- Day / Night Mode Toggle -->
-        <button id="btn-toggle-theme" class="btn-toggle-theme-shared p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Toggle Day/Night Mode (T)">
-          <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+        <button id="btn-toggle-theme" class="btn-toggle-theme-shared p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Toggle Day/Night Mode (Shortcut: T)">
+          <i data-lucide="sun" class="w-4 h-4 text-amber-500"></i>
         </button>
 
         <!-- Lock Screen Button -->
-        <button id="btn-lock-app" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Lock Screen (PIN)">
-          <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+        <button id="btn-lock-app" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Lock Screen (PIN)">
+          <i data-lucide="lock" class="w-4 h-4"></i>
         </button>
 
         <!-- Settings Button -->
-        <button id="btn-open-settings" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Settings & Device Pairing">
-          <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+        <button id="btn-open-settings" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Settings & Cloud Sync">
+          <i data-lucide="sliders" class="w-4 h-4"></i>
         </button>
 
         <!-- Backup Button -->
-        <button id="btn-open-backup" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-sm transition" title="Data Backup (JSON)">
-          <i data-lucide="database" class="w-3.5 h-3.5"></i>
+        <button id="btn-open-backup" class="p-2 rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Data Backup (JSON)">
+          <i data-lucide="database" class="w-4 h-4"></i>
         </button>
       </div>
     </div>
@@ -393,68 +488,71 @@
     </div>
 
     <!-- 2.5. EXECUTIVE MILESTONE TRACKER (PHASE 1 RELOCATION TRIO) -->
-    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141418] shadow-sm p-4 space-y-3">
+    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141418] shadow-sm p-4 sm:p-5 space-y-4">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <h3 class="text-xs font-bold font-mono tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
-            Phase 1 Relocation Milestones (Bootstrap Mode)
-          </h3>
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
+              Phase 1 Sri Lanka Settlement Cockpit (Bootstrap Mode)
+            </h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">Protect capital until 1.5M Car Down Payment & 2M House Funds are locked</p>
+          </div>
         </div>
-        <button id="btn-open-metrics" type="button" class="text-[11px] font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 flex items-center gap-1 transition">
-          <i data-lucide="sliders" class="w-3 h-3"></i> Update Baseline
+        <button id="btn-open-metrics" type="button" class="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-semibold text-zinc-700 dark:text-zinc-200 flex items-center gap-1.5 transition active:scale-95 shadow-xs">
+          <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Update Baseline
         </button>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
         <!-- 1. Car Down Payment -->
-        <div class="p-3 rounded-lg bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200/70 dark:border-zinc-800/80 space-y-2">
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span class="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+        <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
               🚗 Car Down Payment
             </span>
-            <span id="metric-car-pct" class="text-emerald-600 dark:text-emerald-400 font-bold">0%</span>
+            <span id="metric-car-pct" class="text-sm sm:text-base font-extrabold font-mono text-emerald-600 dark:text-emerald-400">0%</span>
           </div>
-          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden">
             <div id="bar-metric-car" class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
           </div>
-          <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500">
-            <span id="metric-car-current">Rs. 0</span>
-            <span>Target: 1.5M LKR</span>
+          <div class="flex items-center justify-between text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+            <span id="metric-car-current" class="font-bold text-zinc-900 dark:text-zinc-100">Rs. 0</span>
+            <span>Target: 1.5M Upfront</span>
           </div>
         </div>
 
         <!-- 2. House Completion -->
-        <div class="p-3 rounded-lg bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200/70 dark:border-zinc-800/80 space-y-2">
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span class="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+        <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
               🏡 House Completion
             </span>
-            <span id="metric-house-pct" class="text-blue-600 dark:text-blue-400 font-bold">0%</span>
+            <span id="metric-house-pct" class="text-sm sm:text-base font-extrabold font-mono text-blue-600 dark:text-blue-400">0%</span>
           </div>
-          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden">
             <div id="bar-metric-house" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
           </div>
-          <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500">
-            <span id="metric-house-current">Rs. 0</span>
+          <div class="flex items-center justify-between text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+            <span id="metric-house-current" class="font-bold text-zinc-900 dark:text-zinc-100">Rs. 0</span>
             <span>Target: 2.0M LKR</span>
           </div>
         </div>
 
         <!-- 3. TikTok Audience Growth -->
-        <div class="p-3 rounded-lg bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200/70 dark:border-zinc-800/80 space-y-2">
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span class="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+        <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
               📱 TikTok Cash Engine
             </span>
-            <span id="metric-tiktok-pct" class="text-amber-600 dark:text-amber-400 font-bold">28.5%</span>
+            <span id="metric-tiktok-pct" class="text-sm sm:text-base font-extrabold font-mono text-amber-600 dark:text-amber-400">28.5%</span>
           </div>
-          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden">
             <div id="bar-metric-tiktok" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 28.5%"></div>
           </div>
-          <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500">
-            <span id="metric-tiktok-current">28,500</span>
-            <span id="metric-social-subs">Target: 100K (FB: 245 • YT: 145)</span>
+          <div class="flex items-center justify-between text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+            <span id="metric-tiktok-current" class="font-bold text-zinc-900 dark:text-zinc-100">28,500</span>
+            <span id="metric-social-subs">Goal: 100K (FB: 245 • YT: 145)</span>
           </div>
         </div>
       </div>
@@ -462,35 +560,35 @@
 
     <!-- 3. TRIAGE BOARD FILTER CONTROLS -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-      <div class="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar text-xs">
-        <button data-filter="all" class="tab-btn active px-3 py-1.5 rounded-lg font-semibold bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 transition font-mono text-[11px]">
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar text-xs">
+        <button data-filter="all" class="tab-btn active px-3.5 py-2 rounded-xl font-bold bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 transition text-xs sm:text-sm shadow-xs">
           Active (<span id="count-all">0</span>)
         </button>
-        <button data-filter="DO_NOW" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-emerald-700 dark:text-emerald-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px]">
+        <button data-filter="DO_NOW" class="tab-btn px-3.5 py-2 rounded-xl font-semibold bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-emerald-700 dark:text-emerald-400 border border-zinc-200 dark:border-zinc-800 transition text-xs sm:text-sm">
           Do Now (<span id="count-donow">0</span>)
         </button>
-        <button data-filter="SOMEDAY" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-sky-700 dark:text-sky-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px]">
+        <button data-filter="SOMEDAY" class="tab-btn px-3.5 py-2 rounded-xl font-semibold bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-sky-700 dark:text-sky-400 border border-zinc-200 dark:border-zinc-800 transition text-xs sm:text-sm">
           Freezer (<span id="count-someday">0</span>)
         </button>
-        <button data-filter="DELEGATE" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-violet-700 dark:text-violet-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px]">
+        <button data-filter="DELEGATE" class="tab-btn px-3.5 py-2 rounded-xl font-semibold bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-violet-700 dark:text-violet-400 border border-zinc-200 dark:border-zinc-800 transition text-xs sm:text-sm">
           Automate (<span id="count-delegate">0</span>)
         </button>
-        <button data-filter="DISTRACTION" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-rose-700 dark:text-rose-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px]">
+        <button data-filter="DISTRACTION" class="tab-btn px-3.5 py-2 rounded-xl font-semibold bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-rose-700 dark:text-rose-400 border border-zinc-200 dark:border-zinc-800 transition text-xs sm:text-sm">
           Parked (<span id="count-distraction">0</span>)
         </button>
-        <button data-filter="COMPLETED" class="tab-btn px-3 py-1.5 rounded-lg font-medium bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-amber-700 dark:text-amber-400 border border-zinc-200 dark:border-zinc-800 transition font-mono text-[11px] flex items-center gap-1.5">
-          <i data-lucide="trophy" class="w-3.5 h-3.5 text-amber-500"></i> Done & Wins (<span id="count-completed">0</span>)
+        <button data-filter="COMPLETED" class="tab-btn px-3.5 py-2 rounded-xl font-semibold bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-amber-700 dark:text-amber-400 border border-zinc-200 dark:border-zinc-800 transition text-xs sm:text-sm flex items-center gap-1.5">
+          <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i> Done & Wins (<span id="count-completed">0</span>)
         </button>
       </div>
 
       <!-- Search Input -->
-      <div class="relative w-full sm:w-56">
-        <i data-lucide="search" class="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-2.5"></i>
+      <div class="relative w-full sm:w-64">
+        <i data-lucide="search" class="w-4 h-4 text-zinc-400 absolute left-3 top-3"></i>
         <input 
           id="search-input" 
           type="text" 
-          placeholder="Filter logs..." 
-          class="w-full bg-white dark:bg-[#141418] text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 pl-8 pr-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition"
+          placeholder="Search ideas & plans..." 
+          class="w-full bg-white dark:bg-[#141418] text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 pl-9 pr-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition"
         >
       </div>
     </div>
@@ -823,17 +921,17 @@
             </ol>
           </div>
 
-          <div class="flex items-center justify-between pt-1 flex-wrap gap-2">
-            <label class="flex items-center gap-1.5 cursor-pointer">
+          <div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+            <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" id="check-auto-sheet" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
-              <span class="text-[11px] text-zinc-600 dark:text-zinc-400">Auto-sync across devices</span>
+              <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Auto-sync across devices</span>
             </label>
-            <div class="flex items-center gap-1.5">
-              <button id="btn-cloud-pull-now" type="button" class="px-2.5 py-1 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded border border-zinc-200 dark:border-zinc-700 text-[11px] font-mono flex items-center gap-1">
-                <i data-lucide="refresh-cw" class="w-3 h-3"></i> Sync Now
+            <div class="flex items-center gap-2">
+              <button id="btn-cloud-pull-now" type="button" class="px-3 py-1.5 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg border border-zinc-200 dark:border-zinc-700 text-xs font-semibold flex items-center gap-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Sync Now
               </button>
-              <button id="btn-open-pairing-modal" type="button" class="px-2.5 py-1 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-semibold rounded text-[11px] flex items-center gap-1">
-                <i data-lucide="smartphone" class="w-3 h-3"></i> Pair Device (QR)
+              <button id="btn-open-transfer-from-settings" type="button" class="px-3 py-1.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-semibold rounded-lg text-xs flex items-center gap-1.5 shadow-xs hover:opacity-90 transition">
+                <i data-lucide="arrow-left-right" class="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600"></i> Phone ⇄ PC Transfer
               </button>
             </div>
           </div>
@@ -933,6 +1031,72 @@
         <button id="btn-clear-completed" class="w-full flex items-center justify-center gap-2 p-2.5 bg-transparent hover:bg-rose-50 dark:hover:bg-rose-950/20 rounded-lg font-medium text-rose-600 dark:text-rose-400 border border-transparent transition">
           <i data-lucide="trash" class="w-4 h-4"></i> Clear Completed Items
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DIRECT PHONE <-> PC DATA TRANSFER -->
+  <div id="modal-transfer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#141418] border border-zinc-200 dark:border-zinc-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 flex items-center justify-center shadow-xs">
+            <i data-lucide="arrow-left-right" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Phone ⇄ PC Quick Transfer</h2>
+            <p class="text-xs text-zinc-500">Move your dumped ideas and tasks between devices in seconds</p>
+          </div>
+        </div>
+        <button id="btn-close-transfer" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Mode Selector Tabs -->
+      <div class="grid grid-cols-2 gap-1.5 p-1 bg-zinc-100 dark:bg-zinc-900 rounded-xl text-xs font-semibold">
+        <button id="tab-transfer-export" type="button" class="py-2 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs flex items-center justify-center gap-1.5">
+          <i data-lucide="upload" class="w-3.5 h-3.5 text-blue-500"></i> Export from this device
+        </button>
+        <button id="tab-transfer-import" type="button" class="py-2 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center justify-center gap-1.5">
+          <i data-lucide="download" class="w-3.5 h-3.5 text-emerald-500"></i> Import on this device
+        </button>
+      </div>
+
+      <!-- TAB 1: EXPORT / SEND (Run on phone) -->
+      <div id="transfer-panel-export" class="space-y-3">
+        <div class="p-3.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
+          <p class="font-semibold mb-1">📱 When dumping ideas outside on your phone:</p>
+          <p>Tap <strong>"Copy Transfer Code"</strong> below, paste it into your WhatsApp, Telegram, or Notes to send to your PC, and paste it on PC to import all your tasks!</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Your Transfer Payload:</label>
+          <textarea id="transfer-export-code" readonly rows="4" class="w-full text-xs font-mono p-3 bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-xl resize-none text-zinc-800 dark:text-zinc-200 select-all custom-scrollbar"></textarea>
+        </div>
+
+        <button id="btn-copy-transfer-code" type="button" class="w-full py-2.5 px-4 rounded-xl text-sm font-bold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2">
+          <i data-lucide="copy" class="w-4 h-4"></i> Copy Transfer Code
+        </button>
+        <p id="transfer-export-status" class="text-xs text-center font-semibold text-emerald-600 dark:text-emerald-400 hidden"></p>
+      </div>
+
+      <!-- TAB 2: IMPORT / RECEIVE (Run on PC) -->
+      <div id="transfer-panel-import" class="hidden space-y-3">
+        <div class="p-3.5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200/60 dark:border-emerald-900/40 text-xs text-emerald-900 dark:text-emerald-200 leading-relaxed">
+          <p class="font-semibold mb-1">💻 Importing tasks dumped on your phone:</p>
+          <p>Paste the Transfer Code from your phone below. All ideas, status updates, and milestones will be seamlessly merged into your PC!</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Paste Transfer Code:</label>
+          <textarea id="transfer-import-code" rows="4" placeholder="Paste your transfer code here..." class="w-full text-xs font-mono p-3 bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800 rounded-xl resize-none text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 custom-scrollbar outline-none focus:border-zinc-400"></textarea>
+        </div>
+
+        <button id="btn-execute-import" type="button" class="w-full py-2.5 px-4 rounded-xl text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i> Merge & Load Tasks
+        </button>
+        <p id="transfer-import-status" class="text-xs text-center font-semibold hidden"></p>
       </div>
     </div>
   </div>
@@ -1249,7 +1413,7 @@
       if (settings.webhookUrl) {
         cloudPull();
       } else {
-        updateCloudStatus('offline', 'Local');
+        updateCloudStatus('offline', 'Local Mode');
       }
 
       window.addEventListener('focus', () => {
@@ -1409,19 +1573,19 @@
 
       label.textContent = text;
       if (status === 'synced') {
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-500 shadow-xs';
       } else if (status === 'syncing') {
         dot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-ping';
       } else if (status === 'error') {
         dot.className = 'w-2 h-2 rounded-full bg-rose-500';
       } else {
-        dot.className = 'w-2 h-2 rounded-full bg-zinc-400';
+        dot.className = 'w-2 h-2 rounded-full bg-amber-500';
       }
     }
 
     async function cloudPull() {
       if (!settings.webhookUrl) {
-        updateCloudStatus('offline', 'Local');
+        updateCloudStatus('offline', 'Local Mode');
         return;
       }
 
@@ -1544,6 +1708,161 @@
       const statusP = document.getElementById('pairing-link-status');
       statusP.textContent = "✅ Pairing link copied to clipboard!";
       statusP.className = "text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold";
+    }
+
+    // --- DIRECT PHONE <-> PC DATA TRANSFER ---
+    function openTransferModal(mode = 'export') {
+      const modal = document.getElementById('modal-transfer');
+      if (!modal) return;
+      switchTransferTab(mode);
+      refreshTransferExportCode();
+      modal.classList.remove('hidden');
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+
+    function closeTransferModal() {
+      const modal = document.getElementById('modal-transfer');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchTransferTab(mode) {
+      const tabExport = document.getElementById('tab-transfer-export');
+      const tabImport = document.getElementById('tab-transfer-import');
+      const panelExport = document.getElementById('transfer-panel-export');
+      const panelImport = document.getElementById('transfer-panel-import');
+
+      if (mode === 'export') {
+        tabExport.className = 'py-2 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs flex items-center justify-center gap-1.5 font-bold';
+        tabImport.className = 'py-2 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center justify-center gap-1.5 font-medium';
+        panelExport.classList.remove('hidden');
+        panelImport.classList.add('hidden');
+        refreshTransferExportCode();
+      } else {
+        tabImport.className = 'py-2 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs flex items-center justify-center gap-1.5 font-bold';
+        tabExport.className = 'py-2 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center justify-center gap-1.5 font-medium';
+        panelImport.classList.remove('hidden');
+        panelExport.classList.add('hidden');
+        const inputArea = document.getElementById('transfer-import-code');
+        if (inputArea) inputArea.focus();
+      }
+    }
+
+    function refreshTransferExportCode() {
+      const textarea = document.getElementById('transfer-export-code');
+      if (!textarea) return;
+      const payload = {
+        app: "operations-manager-pa",
+        version: 1,
+        exported_at: new Date().toISOString(),
+        ideas: ideas || [],
+        metrics: metrics || DEFAULT_METRICS,
+        goals: goals || SRI_LANKA_MANDALA_PRESET
+      };
+      const code = 'OM_SYNC:' + btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+      textarea.value = code;
+    }
+
+    function copyTransferCode() {
+      const textarea = document.getElementById('transfer-export-code');
+      const statusP = document.getElementById('transfer-export-status');
+      if (!textarea) return;
+
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        if (statusP) {
+          statusP.textContent = "✅ Transfer code copied! Paste it into your PC to import.";
+          statusP.classList.remove('hidden');
+          setTimeout(() => statusP.classList.add('hidden'), 5000);
+        }
+      }).catch(() => {
+        textarea.select();
+        document.execCommand('copy');
+        if (statusP) {
+          statusP.textContent = "✅ Transfer code copied!";
+          statusP.classList.remove('hidden');
+        }
+      });
+    }
+
+    function executeTransferImport() {
+      const textarea = document.getElementById('transfer-import-code');
+      const statusP = document.getElementById('transfer-import-status');
+      if (!textarea || !textarea.value.trim()) {
+        alert("Please paste the transfer code from your phone first.");
+        return;
+      }
+
+      let raw = textarea.value.trim();
+      let payload = null;
+      try {
+        if (raw.startsWith('OM_SYNC:')) {
+          const jsonStr = decodeURIComponent(escape(atob(raw.slice(8))));
+          payload = JSON.parse(jsonStr);
+        } else {
+          payload = JSON.parse(raw);
+        }
+      } catch (err) {
+        if (statusP) {
+          statusP.textContent = "❌ Invalid code format. Make sure you copied the full transfer code.";
+          statusP.className = "text-xs text-center font-semibold text-rose-600 dark:text-rose-400";
+          statusP.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (!payload || !Array.isArray(payload.ideas)) {
+        if (statusP) {
+          statusP.textContent = "❌ Code contains no ideas or is corrupted.";
+          statusP.className = "text-xs text-center font-semibold text-rose-600 dark:text-rose-400";
+          statusP.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // Merge ideas cleanly without duplicate IDs
+      const existingMap = new Map(ideas.map(i => [i.id, i]));
+      let added = 0;
+      let updated = 0;
+
+      payload.ideas.forEach(incoming => {
+        if (existingMap.has(incoming.id)) {
+          existingMap.set(incoming.id, { ...existingMap.get(incoming.id), ...incoming });
+          updated++;
+        } else {
+          existingMap.set(incoming.id, incoming);
+          added++;
+        }
+      });
+
+      ideas = Array.from(existingMap.values());
+      ideas.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+      saveIdeas();
+
+      if (payload.metrics) {
+        metrics = { ...DEFAULT_METRICS, ...metrics, ...payload.metrics };
+        localStorage.setItem(STORAGE_KEY_METRICS, JSON.stringify(metrics));
+        renderMetrics();
+      }
+
+      if (payload.goals) {
+        goals = { ...SRI_LANKA_MANDALA_PRESET, ...goals, ...payload.goals };
+        localStorage.setItem(STORAGE_KEY_GOALS, JSON.stringify(goals));
+        updateGoalsPreview();
+      }
+
+      renderIdeas();
+
+      if (statusP) {
+        statusP.textContent = `🎉 Success! Imported ${added} new tasks & updated ${updated} tasks. Total: ${ideas.length}.`;
+        statusP.className = "text-xs text-center font-semibold text-emerald-600 dark:text-emerald-400";
+        statusP.classList.remove('hidden');
+      }
+
+      textarea.value = '';
+      setTimeout(() => {
+        closeTransferModal();
+      }, 2500);
     }
 
     // --- TIME-SYNCED FOCUS TRACKER STATE & AUDIO ---
@@ -1842,6 +2161,24 @@
       if (container) container.scrollIntoView({ behavior: 'smooth' });
     }
 
+    function showToast(msg, duration = 3500) {
+      let toast = document.getElementById('om-toast-notification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'om-toast-notification';
+        toast.className = 'fixed bottom-6 right-6 z-[100] max-w-md px-4 py-3 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-semibold text-xs sm:text-sm shadow-2xl flex items-center gap-2.5 transition-all duration-300 transform translate-y-12 opacity-0 pointer-events-none border border-zinc-700 dark:border-zinc-300';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<i data-lucide="info" class="w-4 h-4 text-emerald-400 dark:text-emerald-600 shrink-0"></i> <span>${escapeHtml(msg)}</span>`;
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+      toast.classList.remove('translate-y-12', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-12', 'opacity-0', 'pointer-events-none');
+      }, duration);
+    }
+
     function completeFocusTask() {
       if (!focusState) return;
       const idea = ideas.find(i => i.id === focusState.taskId);
@@ -1856,6 +2193,7 @@
       saveFocusState();
       renderFocusTracker();
       renderIdeas();
+      showToast("🎉 Milestone conquered! Moved to 'Done & Wins' archive tab.");
     }
 
     function minimizeFocus() {
@@ -2191,130 +2529,136 @@ Respond STRICTLY in valid JSON matching this schema:
       let borderAccent = '';
 
       if (idea.category === 'DO_NOW') {
-        categoryBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+        categoryBadge = `<span class="px-2.5 py-1 rounded-md text-xs font-bold tracking-wide bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60">
           DO NOW
         </span>`;
         borderAccent = 'border-l-4 border-l-emerald-600 dark:border-l-emerald-500';
       } else if (idea.category === 'SOMEDAY') {
-        categoryBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-sky-50 text-sky-800 dark:bg-sky-950/50 dark:text-sky-300 border border-sky-200 dark:border-sky-800/60">
+        categoryBadge = `<span class="px-2.5 py-1 rounded-md text-xs font-bold tracking-wide bg-sky-50 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300 border border-sky-300 dark:border-sky-700/60">
           FREEZER
         </span>`;
         borderAccent = 'border-l-4 border-l-sky-600 dark:border-l-sky-500';
       } else if (idea.category === 'DELEGATE') {
-        categoryBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-violet-50 text-violet-800 dark:bg-violet-950/50 dark:text-violet-300 border border-violet-200 dark:border-violet-800/60">
+        categoryBadge = `<span class="px-2.5 py-1 rounded-md text-xs font-bold tracking-wide bg-violet-50 text-violet-800 dark:bg-violet-950/60 dark:text-violet-300 border border-violet-300 dark:border-violet-700/60">
           AUTOMATE
         </span>`;
         borderAccent = 'border-l-4 border-l-violet-600 dark:border-l-violet-500';
       } else {
-        categoryBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-rose-50 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
+        categoryBadge = `<span class="px-2.5 py-1 rounded-md text-xs font-bold tracking-wide bg-rose-50 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-700/60">
           PARKED
         </span>`;
         borderAccent = 'border-l-4 border-l-rose-600 dark:border-l-rose-500';
       }
 
       if (idea.completed) {
-        categoryBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-700/80 flex items-center gap-1">
-          <i data-lucide="trophy" class="w-3 h-3 text-amber-500"></i> CONQUERED
+        categoryBadge = `<span class="px-2.5 py-1 rounded-md text-xs font-bold tracking-wide bg-amber-50 text-amber-900 dark:bg-amber-950/70 dark:text-amber-200 border border-amber-300 dark:border-amber-700 flex items-center gap-1.5 shadow-xs">
+          <i data-lucide="trophy" class="w-3.5 h-3.5 text-amber-500"></i> CONQUERED
         </span>`;
         borderAccent = 'border-l-4 border-l-amber-500 dark:border-l-amber-400';
       }
 
       if (isCurrentFocus) {
-        borderAccent += ' ring-1 ring-emerald-500';
+        borderAccent += ' ring-2 ring-emerald-500';
       }
 
       const card = document.createElement('div');
-      card.className = `rounded-xl border transition-all p-4 relative ${borderAccent} ${
+      card.className = `rounded-xl border transition-all p-5 relative ${borderAccent} ${
         idea.completed 
-          ? 'bg-amber-50/10 dark:bg-[#0e0e0a] border-amber-200/50 dark:border-amber-900/30' 
+          ? 'bg-amber-50/15 dark:bg-[#0e0e0a] border-amber-200/60 dark:border-amber-900/40' 
           : 'bg-white dark:bg-[#141418] border-zinc-200 dark:border-zinc-800 shadow-sm'
       }`;
 
       const stepsHtml = (idea.how || []).map((step, idx) => `
-        <li class="flex items-start gap-2 text-xs text-zinc-700 dark:text-zinc-300">
-          <span class="w-4 h-4 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono text-[10px] font-semibold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+        <li class="flex items-start gap-3 text-sm sm:text-base text-zinc-800 dark:text-zinc-200 leading-relaxed">
+          <span class="w-5 h-5 rounded-md bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
           <span class="flex-1">${escapeHtml(step)}</span>
         </li>
       `).join('');
 
       card.innerHTML = `
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-2.5">
-          <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2.5 flex-wrap">
             ${categoryBadge}
-            <span class="text-xs font-mono text-zinc-500 flex items-center gap-1">
-              ALIGN: <strong class="text-zinc-900 dark:text-zinc-100">${idea.alignment_score}/10</strong>
+            <span class="text-xs font-bold font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 flex items-center gap-1">
+              ALIGNMENT: <strong class="text-zinc-900 dark:text-zinc-100 text-sm">${idea.alignment_score}/10</strong>
             </span>
           </div>
 
-          <div class="flex items-center gap-1 text-xs">
+          <div class="flex items-center gap-1.5 text-sm">
             ${isCurrentFocus ? `
-              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-600 text-white dark:bg-emerald-400 dark:text-black flex items-center gap-1">
+              <span class="px-2.5 py-1 rounded text-xs font-bold bg-emerald-600 text-white dark:bg-emerald-400 dark:text-black flex items-center gap-1">
                 IN SPRINT
               </span>
             ` : (!idea.completed ? `
-              <button class="btn-card-focus flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition active:scale-95" title="Start Focus Sprint on this task">
-                <i data-lucide="play" class="w-3 h-3 text-emerald-600 dark:text-emerald-400 fill-current"></i> Focus
+              <button class="btn-card-focus flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 hover:opacity-90 transition active:scale-95 shadow-xs" title="Start Focus Sprint on this task">
+                <i data-lucide="play" class="w-3.5 h-3.5 text-emerald-400 fill-current"></i> Focus
               </button>
             ` : '')}
 
-            <button class="btn-toggle-complete p-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-emerald-600 transition" title="${idea.completed ? 'Mark Incomplete' : 'Mark Done'}">
-              <i data-lucide="${idea.completed ? 'check-circle-2' : 'circle'}" class="w-4 h-4 ${idea.completed ? 'text-emerald-600 dark:text-emerald-400' : ''}"></i>
-            </button>
-            <button class="btn-copy-plan p-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Copy Plan">
+            ${idea.completed ? `
+              <button class="btn-toggle-complete flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/70 dark:hover:bg-amber-900/90 dark:text-amber-200 transition active:scale-95 border border-amber-300 dark:border-amber-700 shadow-xs" title="Restore task back to active board">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restore to Active
+              </button>
+            ` : `
+              <button class="btn-toggle-complete p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-emerald-600 transition" title="Mark Done">
+                <i data-lucide="circle" class="w-4 h-4"></i>
+              </button>
+            `}
+            <button class="btn-copy-plan p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Copy Plan">
               <i data-lucide="copy" class="w-4 h-4"></i>
             </button>
-            <button class="btn-change-cat p-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Reclassify">
+            <button class="btn-change-cat p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Reclassify">
               <i data-lucide="shuffle" class="w-4 h-4"></i>
             </button>
-            <button class="btn-delete-idea p-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-600 transition" title="Delete">
+            <button class="btn-delete-idea p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-600 transition" title="Delete">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
 
-        <div class="mb-3">
-          <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 ${idea.completed ? 'line-through text-zinc-400' : ''}">
+        <div class="mb-3.5">
+          <h3 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
             ${escapeHtml(idea.title)}
           </h3>
-          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 italic bg-zinc-50 dark:bg-[#0c0c0e] p-2 rounded border border-zinc-200 dark:border-zinc-800/60">
+          <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1.5 italic bg-zinc-50 dark:bg-zinc-900/60 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800/80 leading-relaxed">
             "${escapeHtml(idea.raw)}"
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs mb-3">
-          <div class="flex items-center gap-2 p-2 rounded bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800/80">
-            <i data-lucide="calendar" class="w-3.5 h-3.5 text-zinc-500 shrink-0"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm mb-3.5">
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/80">
+            <i data-lucide="calendar" class="w-4 h-4 text-zinc-500 shrink-0"></i>
             <div class="truncate">
-              <span class="text-zinc-400 block text-[9px] font-mono font-semibold uppercase">Timing</span>
-              <span class="text-zinc-800 dark:text-zinc-200 font-medium">${escapeHtml(idea.when)}</span>
+              <span class="text-zinc-400 block text-xs font-bold uppercase tracking-wider">Timing</span>
+              <span class="text-zinc-800 dark:text-zinc-200 font-semibold text-sm">${escapeHtml(idea.when)}</span>
             </div>
           </div>
-          <div class="flex items-center gap-2 p-2 rounded bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-zinc-800/80">
-            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-zinc-500 shrink-0"></i>
+          <div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/80">
+            <i data-lucide="map-pin" class="w-4 h-4 text-zinc-500 shrink-0"></i>
             <div class="truncate">
-              <span class="text-zinc-400 block text-[9px] font-mono font-semibold uppercase">Tool / Context</span>
-              <span class="text-zinc-800 dark:text-zinc-200 font-medium">${escapeHtml(idea.where)}</span>
+              <span class="text-zinc-400 block text-xs font-bold uppercase tracking-wider">Tool / Context</span>
+              <span class="text-zinc-800 dark:text-zinc-200 font-semibold text-sm">${escapeHtml(idea.where)}</span>
             </div>
           </div>
         </div>
 
         ${idea.how && idea.how.length > 0 ? `
-          <div class="mb-3 bg-zinc-50 dark:bg-[#0c0c0e] p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800/80">
-            <span class="text-[10px] font-mono font-semibold uppercase text-zinc-500 mb-2 block flex items-center gap-1.5">
-              <i data-lucide="list-todo" class="w-3 h-3"></i> 3-Step Execution Blueprint
+          <div class="mb-3.5 bg-zinc-50 dark:bg-zinc-900/60 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80">
+            <span class="text-xs font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-2.5 flex items-center gap-2">
+              <i data-lucide="list-todo" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i> 3-Step Execution Blueprint
             </span>
-            <ul class="space-y-1.5">
+            <ul class="space-y-2">
               ${stepsHtml}
             </ul>
           </div>
         ` : ''}
 
         ${idea.manager_verdict ? `
-          <div class="text-xs bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 p-2.5 rounded-lg flex items-start gap-2">
-            <i data-lucide="message-square" class="w-3.5 h-3.5 text-zinc-500 shrink-0 mt-0.5"></i>
+          <div class="text-sm bg-amber-50/40 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/40 p-3.5 rounded-xl flex items-start gap-3">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"></i>
             <div class="flex-1">
-              <span class="text-[10px] font-mono font-semibold uppercase text-zinc-500 block">Manager Rationale</span>
-              <p class="text-zinc-700 dark:text-zinc-300 italic text-[11px]">${escapeHtml(idea.manager_verdict)}</p>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 block">Operations Manager Rationale</span>
+              <p class="text-zinc-800 dark:text-zinc-200 leading-relaxed font-medium mt-1 text-sm">${escapeHtml(idea.manager_verdict)}</p>
             </div>
           </div>
         ` : ''}
@@ -2329,6 +2673,9 @@ Respond STRICTLY in valid JSON matching this schema:
         idea.completed = !idea.completed;
         if (idea.completed) {
           idea.completed_at = new Date().toISOString();
+          showToast("🎉 Task conquered! Moved to 'Done & Wins' tab.");
+        } else {
+          showToast("↩️ Task restored back to active list!");
         }
         saveIdeas();
         renderIdeas();
@@ -2571,11 +2918,26 @@ Respond STRICTLY in valid JSON matching this schema:
       });
 
       // Cloud Sync & Pairing
-      document.getElementById('btn-cloud-sync')?.addEventListener('click', cloudPull);
+      document.getElementById('btn-cloud-sync')?.addEventListener('click', () => {
+        if (!settings.webhookUrl) {
+          openTransferModal('export');
+        } else {
+          cloudPull();
+        }
+      });
       document.getElementById('btn-cloud-pull-now')?.addEventListener('click', cloudPull);
       document.getElementById('btn-open-pairing-modal')?.addEventListener('click', openPairingModal);
       document.getElementById('btn-close-pairing')?.addEventListener('click', closePairingModal);
       document.getElementById('btn-copy-pairing-link')?.addEventListener('click', copyPairingLink);
+
+      // Phone <-> PC Direct Transfer
+      document.getElementById('btn-open-transfer')?.addEventListener('click', () => openTransferModal('export'));
+      document.getElementById('btn-open-transfer-from-settings')?.addEventListener('click', () => { closeSettingsModal(); openTransferModal('export'); });
+      document.getElementById('btn-close-transfer')?.addEventListener('click', closeTransferModal);
+      document.getElementById('tab-transfer-export')?.addEventListener('click', () => switchTransferTab('export'));
+      document.getElementById('tab-transfer-import')?.addEventListener('click', () => switchTransferTab('import'));
+      document.getElementById('btn-copy-transfer-code')?.addEventListener('click', copyTransferCode);
+      document.getElementById('btn-execute-import')?.addEventListener('click', executeTransferImport);
 
       // Goals modal
       document.getElementById('btn-open-goals').addEventListener('click', openGoalsModal);
