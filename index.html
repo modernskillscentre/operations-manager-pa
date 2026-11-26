@@ -2941,8 +2941,9 @@ SACRED FAMILY & LIVING RULE (CRITICAL):
 
 CONTENT EXECUTION BLUEPRINT (6-BEAT VIRAL EDUCATION FORMULA):
 If the user's idea relates to social media, TikTok, YouTube, teaching English, or student acquisition, format the 3 micro-steps in "how" or provide a script following this exact 6-beat sequence:
-1. Pain Point: (0-3s relatable hook or common speaking freeze)
-2. Answer (Action Plan): (4-20s bite-sized, practical solution or formula)
+- LANGUAGE: Normal, day-to-day spoken Sinhala and English (natural, conversational Singlish; NEVER formal/textbook Sinhala).
+1. Pain Point: (0-3s relatable hook or common speaking freeze in spoken Sinhala + English)
+2. Answer (Action Plan): (4-20s bite-sized, practical solution or formula with contrast)
 3. Motivation Punch Line: (20-25s empowering confidence booster)
 4. Course Indirectly Marketed: (25-30s natural tie-in to English Tree / Online Class)
 5. Free Resource: (30-35s lead magnet PDF or cheat sheet)
@@ -3767,15 +3768,20 @@ Respond STRICTLY in valid JSON matching this schema:
       modal.classList.remove('hidden');
       content.textContent = "Writing your high-retention 6-beat TikTok script...";
 
-      const prompt = `You are an expert viral education scriptwriter for English Tree.
-Write a high-converting 30-40 second vertical short/TikTok script based on this idea:
+      const prompt = `You are an expert viral education content creator and scriptwriter for "English Tree" in Sri Lanka.
+Write a high-converting 30-40 second vertical TikTok/Short script based on this idea:
 "${idea.raw || idea.title}"
 
+LANGUAGE & TONE MANDATE (CRITICAL):
+- Use NORMAL, DAY-TO-DAY SPOKEN SINHALA AND ENGLISH (Natural colloquial Singlish as educated Sri Lankans talk to each other on TikTok).
+- NEVER use formal, literary, or archaic written Sinhala (NO "ඔබ දන්නවාද", NO "මෙහි පැමිණෙන්න").
+- Talk directly to the viewer like a confident, friendly mentor having a casual conversation, mixing spoken Sinhala and English terms naturally (e.g. "Interview එකකදි freeze වෙනවද?", "Don't panic! මේ simple rule එක use කරන්න.", "English Tree එකේදි අපි live drill කරන්නේ මේක තමයි...").
+
 Strictly follow the user's 6-beat framework:
-1. 🎯 PAIN POINT (0-3s): Relatable, punchy hook addressing a common speaking/interview freeze.
-2. 💡 ANSWER / ACTION PLAN (4-20s): Clear, bite-sized rule or formula with a contrast example.
-3. 🔥 MOTIVATION PUNCH LINE (20-25s): Empowering confidence booster.
-4. 🏫 INDIRECT COURSE MENTION (25-30s): Subtle tie-in to English Tree / Online Intensive class.
+1. 🎯 PAIN POINT (0-3s): Punchy hook addressing a common speaking/interview freeze in spoken Sinhala + English.
+2. 💡 ANSWER / ACTION PLAN (4-20s): Clear, bite-sized rule or formula with a contrast example (Right way vs Wrong way).
+3. 🔥 MOTIVATION PUNCH LINE (20-25s): Empowering confidence booster in spoken Sinhala/English (e.g. accent එක නෙවෙයි වැදගත්, confidence එකයි structure එකයි).
+4. 🏫 INDIRECT COURSE MENTION (25-30s): Subtle tie-in to English Tree / Online Intensive speaking batch.
 5. 🎁 FREE RESOURCE (30-35s): Free PDF cheat sheet / template lead magnet.
 6. 🚀 CTA (35-40s): Exact instruction to comment, DM, or check link in bio.
 
@@ -3836,11 +3842,12 @@ Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, 
         if (b5Line) beat5Mention = `\nPROMISED IN TIKTOK (BEAT 5): ${b5Line.trim()}`;
       }
 
-      const promptForGemini = `Act as an expert English curriculum designer and educational marketer for "English Tree".
+      const promptForGemini = `Act as an expert English curriculum designer and educational marketer for "English Tree" in Sri Lanka.
 I just created a 6-beat TikTok video on the topic:
 "${ideaTitle}"${beat5Mention}
 
-Create a high-value, comprehensive, and printable 1-Page Cheat Sheet / PDF Lead Magnet that I can deliver to students who comment on this video.
+Create a high-value, comprehensive, and printable 1-Page Cheat Sheet / PDF Lead Magnet that I can deliver to Sri Lankan students and job seekers who comment on this video.
+Explanations should use clean, professional English with natural day-to-day spoken Sinhala/English context notes where helpful so any learner grasps the lesson immediately.
 
 REQUIRED STRUCTURE:
 1. 📌 CATCHY TITLE & 2-SENTENCE CORE RULE (Quick overview so they understand immediately).
