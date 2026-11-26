@@ -1316,10 +1316,156 @@ create policy "Allow all state" on app_state for all using (true) with check (tr
         Generating your 6-beat script...
       </div>
 
-      <div class="pt-2 flex justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800 shrink-0">
-        <button id="btn-copy-script" type="button" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
-          <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script to Clipboard
+      <div class="pt-2 flex justify-between items-center gap-2 border-t border-zinc-100 dark:border-zinc-800 shrink-0">
+        <button id="btn-open-teleprompter" type="button" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
+          <i data-lucide="video" class="w-3.5 h-3.5"></i> Film in Teleprompter Mode
         </button>
+        <button id="btn-copy-script" type="button" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GHOSTWRITER MOBILE TELEPROMPTER (RECORDING COCKPIT) -->
+  <div id="modal-teleprompter" class="fixed inset-0 z-[100] bg-black text-white hidden flex flex-col overflow-hidden select-none touch-manipulation font-sans">
+    
+    <!-- TOP CONTROL BAR -->
+    <div id="tp-control-bar" class="w-full bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 px-4 py-3 flex items-center justify-between shrink-0 z-30 transition-opacity duration-300">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-500 border border-red-500/30 flex items-center justify-center shrink-0">
+          <i data-lucide="video" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-black tracking-wider uppercase text-red-500 flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> REC READY
+            </span>
+            <span id="tp-time-display" class="text-xs font-mono text-zinc-400">00:00 / ~00:35</span>
+          </div>
+          <h3 id="tp-title-display" class="text-xs font-bold text-zinc-300 truncate max-w-[180px] sm:max-w-md">TikTok Script</h3>
+        </div>
+      </div>
+
+      <!-- Center Desktop Controls -->
+      <div class="hidden sm:flex items-center gap-2 text-xs">
+        <!-- Font Size Controls -->
+        <div class="flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-0.5">
+          <button id="btn-tp-font-dec" type="button" class="px-2 py-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white font-bold" title="Decrease Font">A-</button>
+          <span id="tp-font-display" class="px-1 text-[11px] text-zinc-400 font-mono">32px</span>
+          <button id="btn-tp-font-inc" type="button" class="px-2 py-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white font-bold" title="Increase Font">A+</button>
+        </div>
+
+        <!-- Speed Controls -->
+        <div class="flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-0.5 gap-1">
+          <button id="btn-tp-speed-dec" type="button" class="px-2 py-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white text-xs font-mono">-</button>
+          <span id="tp-speed-display" class="px-1 text-[11px] text-emerald-400 font-mono font-bold">135 WPM</span>
+          <button id="btn-tp-speed-inc" type="button" class="px-2 py-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white text-xs font-mono">+</button>
+        </div>
+
+        <!-- Mirror Mode Toggle -->
+        <button id="btn-tp-mirror" type="button" class="px-2.5 py-1 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 rounded-lg text-zinc-300 hover:text-white flex items-center gap-1 font-semibold" title="Mirror text for glass teleprompters">
+          <i data-lucide="repeat" class="w-3.5 h-3.5"></i> Mirror
+        </button>
+
+        <!-- Fullscreen Toggle -->
+        <button id="btn-tp-fullscreen" type="button" class="p-1.5 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 rounded-lg text-zinc-300 hover:text-white" title="Toggle Fullscreen">
+          <i data-lucide="maximize" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Close Button -->
+      <div class="flex items-center gap-1.5">
+        <button id="btn-tp-close" type="button" class="p-2 hover:bg-zinc-900 text-zinc-400 hover:text-white rounded-lg transition" title="Exit Teleprompter">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE CONTROL STRIP -->
+    <div class="sm:hidden flex items-center justify-between px-3 py-1.5 bg-zinc-900/95 border-b border-zinc-800 text-xs shrink-0">
+      <div class="flex items-center gap-1">
+        <button id="btn-tp-font-dec-m" type="button" class="px-2 py-0.5 bg-zinc-800 rounded text-zinc-300 font-bold">A-</button>
+        <span id="tp-font-display-m" class="text-[10px] text-zinc-400 font-mono">32px</span>
+        <button id="btn-tp-font-inc-m" type="button" class="px-2 py-0.5 bg-zinc-800 rounded text-zinc-300 font-bold">A+</button>
+      </div>
+      <div class="flex items-center gap-1">
+        <button id="btn-tp-speed-dec-m" type="button" class="px-2 py-0.5 bg-zinc-800 rounded text-zinc-300 font-bold">-</button>
+        <span id="tp-speed-display-m" class="text-[10px] text-emerald-400 font-mono font-bold">135 WPM</span>
+        <button id="btn-tp-speed-inc-m" type="button" class="px-2 py-0.5 bg-zinc-800 rounded text-zinc-300 font-bold">+</button>
+      </div>
+      <button id="btn-tp-mirror-m" type="button" class="px-2 py-0.5 bg-zinc-800 rounded text-zinc-300 text-[10px] font-semibold">Mirror</button>
+    </div>
+
+    <!-- EYE-LINE GUIDE MARKER (Pinned at 26% from top - directly under smartphone camera) -->
+    <div id="tp-eyeline" class="pointer-events-none absolute left-0 right-0 top-[26%] z-20 flex items-center justify-between px-4 opacity-40 hover:opacity-100 transition">
+      <div class="flex items-center gap-1 bg-red-950/80 border border-red-500/40 text-red-400 px-2 py-0.5 rounded text-[10px] font-mono tracking-widest uppercase">
+        <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> EYE LINE
+      </div>
+      <div class="flex-1 mx-3 border-t border-dashed border-red-500/40"></div>
+      <span class="text-[10px] font-mono text-zinc-500">LOOK INTO LENS</span>
+    </div>
+
+    <!-- MAIN PROMPTER SCROLL VIEWPORT -->
+    <div id="tp-viewport" class="flex-1 overflow-y-auto px-4 sm:px-12 md:px-24 py-16 space-y-8 scroll-smooth select-none cursor-pointer" style="font-size: 32px; line-height: 1.55;">
+      <!-- Content injected by JS -->
+    </div>
+
+    <!-- BIG COUNTDOWN OVERLAY (3, 2, 1, ACTION!) -->
+    <div id="tp-countdown" class="hidden absolute inset-0 z-40 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center pointer-events-none">
+      <div id="tp-countdown-number" class="text-8xl sm:text-9xl font-black text-emerald-400 animate-bounce tracking-tight">3</div>
+      <p class="text-sm font-bold uppercase tracking-widest text-zinc-400 mt-4">Eyes on camera lens... smile!</p>
+    </div>
+
+    <!-- FLOATING BOTTOM PLAY/PAUSE COCKPIT -->
+    <div class="w-full bg-gradient-to-t from-black via-zinc-950/95 to-transparent pt-4 pb-6 px-4 flex flex-col items-center gap-3 shrink-0 z-30">
+      <!-- Progress Bar -->
+      <div class="w-full max-w-xl h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+        <div id="tp-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-150" style="width: 0%;"></div>
+      </div>
+
+      <div class="flex items-center justify-center gap-3 w-full max-w-md">
+        <!-- Rewind / Reset -->
+        <button id="btn-tp-restart" type="button" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95 shrink-0" title="Restart Take">
+          <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Big Play/Pause Toggle -->
+        <button id="btn-tp-toggle-play" type="button" class="flex-1 py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm tracking-wide shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2 transition active:scale-98">
+          <i data-lucide="play" id="tp-icon-play" class="w-5 h-5 fill-current"></i>
+          <span id="tp-label-play">START SCROLL (SPACE)</span>
+        </button>
+      </div>
+      <p class="text-[11px] text-zinc-500 text-center">Tap screen or press Space to Play / Pause</p>
+    </div>
+
+    <!-- TAKE COMPLETE VICTORY MODAL -->
+    <div id="tp-take-complete-overlay" class="hidden absolute inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
+      <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-5 shadow-2xl">
+        <div class="w-16 h-16 rounded-3xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 mx-auto flex items-center justify-center text-3xl">
+          🎬
+        </div>
+        <div>
+          <h2 class="text-xl font-black text-white">THAT'S A WRAP! TAKE CONQUERED.</h2>
+          <p class="text-xs text-zinc-400 mt-1">Single-take mastery! One step closer to your 1.5M LKR Car & 2.0M LKR House completion.</p>
+        </div>
+
+        <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-2xl text-left space-y-1">
+          <div class="text-[11px] font-mono text-zinc-500">TASK TO COMPLETE:</div>
+          <div id="tp-complete-task-title" class="text-xs font-bold text-zinc-200 truncate">TikTok Content Task</div>
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <button id="btn-tp-mark-filmed" type="button" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+            <i data-lucide="check" class="w-4 h-4"></i> Mark Video as FILMED & Move to Done
+          </button>
+          <button id="btn-tp-retake" type="button" class="w-full py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-bold text-xs transition active:scale-95 flex items-center justify-center gap-1.5">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Re-take / Practice Again
+          </button>
+          <button id="btn-tp-close-complete" type="button" class="w-full py-2 text-zinc-500 hover:text-zinc-300 text-xs font-medium transition">
+            Exit to Dashboard
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -3057,6 +3203,11 @@ Respond STRICTLY in valid JSON matching this schema:
             <span class="text-xs font-bold font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 flex items-center gap-1">
               ALIGNMENT: <strong class="text-zinc-900 dark:text-zinc-100 text-sm">${idea.alignment_score}/10</strong>
             </span>
+            ${idea.video_filmed ? `
+              <span class="text-xs font-bold font-mono px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 flex items-center gap-1">
+                <i data-lucide="video" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i> FILMED
+              </span>
+            ` : ''}
           </div>
 
           <div class="flex items-center gap-1.5 text-sm">
@@ -3588,12 +3739,26 @@ Respond STRICTLY in valid JSON matching this schema:
       XLSX.writeFile(workbook, `Runway_Ledger_${new Date().toISOString().slice(0, 10)}.xlsx`);
     }
 
-    // --- 6-BEAT SCRIPT VIEWER ENGINE ---
+    // --- 6-BEAT SCRIPT VIEWER & GHOSTWRITER TELEPROMPTER ENGINE ---
+    let currentActiveScriptIdea = null;
+    let currentActiveScriptText = '';
+    let tpIsPlaying = false;
+    let tpSpeedWPM = 135; // default 135 WPM
+    let tpFontSize = 32; // default 32px
+    let tpIsMirrored = false;
+    let tpAnimFrameId = null;
+    let tpLastTimestamp = 0;
+    let tpWakeLock = null;
+    let tpCountdownInterval = null;
+    let tpTotalDurationSec = 35;
+
     async function openScriptViewer(idea) {
       const modal = document.getElementById('modal-script-viewer');
       const content = document.getElementById('script-viewer-content');
       if (!modal || !content) return;
 
+      currentActiveScriptIdea = idea;
+      currentActiveScriptText = '';
       modal.classList.remove('hidden');
       content.textContent = "Writing your high-retention 6-beat TikTok script...";
 
@@ -3634,6 +3799,7 @@ Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, 
           scriptText = await resp.text();
         }
 
+        currentActiveScriptText = scriptText;
         content.textContent = scriptText;
       } catch (err) {
         content.textContent = "Script generation failed: " + err.message;
@@ -3653,6 +3819,370 @@ Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, 
       });
     }
 
+    // --- TELEPROMPTER ENGINE ---
+    async function requestTpWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          tpWakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {
+        console.warn("Screen WakeLock unavailable:", err);
+      }
+    }
+
+    function releaseTpWakeLock() {
+      if (tpWakeLock) {
+        tpWakeLock.release().catch(() => {});
+        tpWakeLock = null;
+      }
+    }
+
+    function openTeleprompter(scriptText, idea) {
+      const modal = document.getElementById('modal-teleprompter');
+      const viewport = document.getElementById('tp-viewport');
+      const titleDisplay = document.getElementById('tp-title-display');
+      if (!modal || !viewport) return;
+
+      currentActiveScriptIdea = idea || currentActiveScriptIdea;
+      const textToUse = scriptText || currentActiveScriptText || (document.getElementById('script-viewer-content')?.textContent || '');
+
+      if (!textToUse.trim() || textToUse.includes("Writing your high-retention")) {
+        showToast("⚠️ Generate the 6-beat script first!");
+        return;
+      }
+
+      currentActiveScriptText = textToUse;
+
+      // Close script viewer modal if open
+      closeScriptViewer();
+
+      // Set Title
+      if (titleDisplay) {
+        titleDisplay.textContent = currentActiveScriptIdea ? (currentActiveScriptIdea.raw || currentActiveScriptIdea.title) : 'TikTok Video Script';
+      }
+
+      // Hide take-complete overlay
+      const completeOverlay = document.getElementById('tp-take-complete-overlay');
+      if (completeOverlay) completeOverlay.classList.add('hidden');
+
+      // Render content
+      renderTeleprompterContent(currentActiveScriptText);
+
+      // Reset state
+      viewport.scrollTop = 0;
+      tpIsPlaying = false;
+      updateTpPlayPauseUI();
+      updateTpSpeedUI();
+      updateTpFontUI();
+      updateTpMirrorUI();
+      updateTpProgress(0);
+
+      // Show modal
+      modal.classList.remove('hidden');
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+
+      // Keep screen awake while filming
+      requestTpWakeLock();
+    }
+
+    function renderTeleprompterContent(rawText) {
+      const viewport = document.getElementById('tp-viewport');
+      if (!viewport) return;
+
+      const paragraphs = rawText.split(/\n\s*\n/).filter(p => p.trim());
+      let html = `<div class="h-28 sm:h-36 pointer-events-none"></div>`;
+
+      paragraphs.forEach(p => {
+        const text = p.trim();
+        const lower = text.toLowerCase();
+        let badgeText = '';
+        let badgeColor = '';
+        let borderClass = 'border-l-4 border-zinc-700 pl-4 py-2';
+
+        if (lower.includes('pain point') || lower.includes('hook') || lower.startsWith('1.')) {
+          badgeText = '🎯 BEAT 1: HOOK (0-3s) • HIGH ENERGY';
+          badgeColor = 'bg-rose-500/20 text-rose-400 border-rose-500/40';
+          borderClass = 'border-l-4 border-rose-500 pl-4 py-2 bg-rose-950/15 rounded-r-2xl';
+        } else if (lower.includes('action plan') || lower.includes('answer') || lower.startsWith('2.')) {
+          badgeText = '💡 BEAT 2: ACTION PLAN (4-20s) • TEACH CLEARLY';
+          badgeColor = 'bg-amber-500/20 text-amber-400 border-amber-500/40';
+          borderClass = 'border-l-4 border-amber-500 pl-4 py-2 bg-amber-950/15 rounded-r-2xl';
+        } else if (lower.includes('motivation') || lower.includes('punch line') || lower.startsWith('3.')) {
+          badgeText = '🔥 BEAT 3: MOTIVATION (20-25s) • CONFIDENCE PUNCH';
+          badgeColor = 'bg-violet-500/20 text-violet-400 border-violet-500/40';
+          borderClass = 'border-l-4 border-violet-500 pl-4 py-2 bg-violet-950/15 rounded-r-2xl';
+        } else if (lower.includes('course') || lower.includes('english tree') || lower.startsWith('4.')) {
+          badgeText = '🏫 BEAT 4: ENGLISH TREE (25-30s) • ORGANIC BRIDGE';
+          badgeColor = 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40';
+          borderClass = 'border-l-4 border-cyan-500 pl-4 py-2 bg-cyan-950/15 rounded-r-2xl';
+        } else if (lower.includes('free resource') || lower.includes('resource') || lower.startsWith('5.')) {
+          badgeText = '🎁 BEAT 5: FREE RESOURCE (30-35s) • LEAD MAGNET';
+          badgeColor = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40';
+          borderClass = 'border-l-4 border-emerald-500 pl-4 py-2 bg-emerald-950/15 rounded-r-2xl';
+        } else if (lower.includes('cta') || lower.includes('call to action') || lower.startsWith('6.')) {
+          badgeText = '🚀 BEAT 6: CALL TO ACTION (35-40s) • BIO / COMMENT';
+          badgeColor = 'bg-green-500/20 text-green-400 border-green-500/40';
+          borderClass = 'border-l-4 border-green-500 pl-4 py-2 bg-green-950/15 rounded-r-2xl';
+        }
+
+        // Format [B-Roll cues]
+        const formatted = escapeHtml(text).replace(/\[(.*?)\]/g, '<span class="block text-xs font-mono uppercase tracking-widest text-zinc-400/80 my-1 font-normal">🎬 $1</span>');
+
+        html += `
+          <div class="tp-beat-block transition-opacity duration-200 ${borderClass} mb-6">
+            ${badgeText ? `<div class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold tracking-wider uppercase border mb-2 ${badgeColor}">${badgeText}</div>` : ''}
+            <div class="font-semibold tracking-tight text-white/95 leading-snug whitespace-pre-wrap">${formatted}</div>
+          </div>
+        `;
+      });
+
+      html += `
+        <div class="h-72 flex flex-col items-center justify-center border-t border-dashed border-zinc-800 text-zinc-500 text-xs font-mono uppercase tracking-widest pt-8">
+          🏁 END OF SCRIPT • THAT'S A WRAP!
+        </div>
+      `;
+
+      viewport.innerHTML = html;
+      viewport.style.fontSize = `${tpFontSize}px`;
+    }
+
+    function toggleTeleprompterPlay() {
+      if (tpIsPlaying) {
+        pauseTeleprompter();
+      } else {
+        startTeleprompterScrollWithCountdown();
+      }
+    }
+
+    function startTeleprompterScrollWithCountdown() {
+      if (tpIsPlaying) return;
+
+      const countdownOverlay = document.getElementById('tp-countdown');
+      const countdownNumber = document.getElementById('tp-countdown-number');
+      if (!countdownOverlay || !countdownNumber) {
+        startTeleprompterScroll();
+        return;
+      }
+
+      countdownOverlay.classList.remove('hidden');
+      let count = 3;
+      countdownNumber.textContent = count;
+
+      if (tpCountdownInterval) clearInterval(tpCountdownInterval);
+
+      tpCountdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownNumber.textContent = count;
+        } else if (count === 0) {
+          countdownNumber.textContent = "🎬 ACTION!";
+        } else {
+          clearInterval(tpCountdownInterval);
+          countdownOverlay.classList.add('hidden');
+          startTeleprompterScroll();
+        }
+      }, 700);
+    }
+
+    function startTeleprompterScroll() {
+      const viewport = document.getElementById('tp-viewport');
+      if (!viewport) return;
+
+      tpIsPlaying = true;
+      tpLastTimestamp = performance.now();
+      updateTpPlayPauseUI();
+
+      function step(now) {
+        if (!tpIsPlaying) return;
+
+        const delta = (now - tpLastTimestamp) / 1000;
+        tpLastTimestamp = now;
+
+        const maxScroll = viewport.scrollHeight - viewport.clientHeight;
+        if (maxScroll > 0) {
+          const pxPerSecond = maxScroll / tpTotalDurationSec;
+          viewport.scrollTop += pxPerSecond * delta;
+
+          const progress = Math.min(100, (viewport.scrollTop / maxScroll) * 100);
+          updateTpProgress(progress);
+
+          if (viewport.scrollTop >= maxScroll - 4) {
+            completeTeleprompterTake();
+            return;
+          }
+        }
+
+        tpAnimFrameId = requestAnimationFrame(step);
+      }
+
+      tpAnimFrameId = requestAnimationFrame(step);
+    }
+
+    function pauseTeleprompter() {
+      tpIsPlaying = false;
+      if (tpAnimFrameId) {
+        cancelAnimationFrame(tpAnimFrameId);
+        tpAnimFrameId = null;
+      }
+      if (tpCountdownInterval) {
+        clearInterval(tpCountdownInterval);
+        const countdownOverlay = document.getElementById('tp-countdown');
+        if (countdownOverlay) countdownOverlay.classList.add('hidden');
+      }
+      updateTpPlayPauseUI();
+    }
+
+    function resetTeleprompter() {
+      pauseTeleprompter();
+      const viewport = document.getElementById('tp-viewport');
+      if (viewport) viewport.scrollTop = 0;
+      updateTpProgress(0);
+    }
+
+    function completeTeleprompterTake() {
+      pauseTeleprompter();
+      const overlay = document.getElementById('tp-take-complete-overlay');
+      const taskTitle = document.getElementById('tp-complete-task-title');
+      if (taskTitle) {
+        taskTitle.textContent = currentActiveScriptIdea ? (currentActiveScriptIdea.raw || currentActiveScriptIdea.title) : "TikTok Video Script";
+      }
+      if (overlay) overlay.classList.remove('hidden');
+      if (window.confetti) {
+        window.confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
+      }
+    }
+
+    function markTeleprompterVideoAsFilmed() {
+      if (currentActiveScriptIdea) {
+        const target = ideas.find(i => i.id === currentActiveScriptIdea.id);
+        if (target) {
+          target.completed = true;
+          target.completed_at = new Date().toISOString();
+          target.video_filmed = true;
+          saveIdeas();
+          renderIdeas();
+          syncAppStateToSupabase('ideas', ideas);
+          showToast("🎉 Video marked as FILMED! Task conquered & moved to Wins.");
+        }
+      } else {
+        showToast("🎉 Take recorded!");
+      }
+      closeTeleprompter();
+    }
+
+    function closeTeleprompter() {
+      pauseTeleprompter();
+      releaseTpWakeLock();
+      const modal = document.getElementById('modal-teleprompter');
+      if (modal) modal.classList.add('hidden');
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    function changeTpSpeed(delta) {
+      tpSpeedWPM = Math.max(90, Math.min(240, tpSpeedWPM + delta));
+      const wordCount = currentActiveScriptText.trim().split(/\s+/).length || 80;
+      tpTotalDurationSec = Math.max(15, Math.round((wordCount / tpSpeedWPM) * 60));
+      updateTpSpeedUI();
+    }
+
+    function updateTpSpeedUI() {
+      const el = document.getElementById('tp-speed-display');
+      const elM = document.getElementById('tp-speed-display-m');
+      const txt = `${tpSpeedWPM} WPM`;
+      if (el) el.textContent = txt;
+      if (elM) elM.textContent = txt;
+      const timeDisplay = document.getElementById('tp-time-display');
+      if (timeDisplay) {
+        const sec = tpTotalDurationSec % 60;
+        const min = Math.floor(tpTotalDurationSec / 60);
+        timeDisplay.textContent = `00:00 / ~0${min}:${sec < 10 ? '0' : ''}${sec}`;
+      }
+    }
+
+    function changeTpFontSize(delta) {
+      tpFontSize = Math.max(22, Math.min(56, tpFontSize + delta));
+      const viewport = document.getElementById('tp-viewport');
+      if (viewport) viewport.style.fontSize = `${tpFontSize}px`;
+      updateTpFontUI();
+    }
+
+    function updateTpFontUI() {
+      const el = document.getElementById('tp-font-display');
+      const elM = document.getElementById('tp-font-display-m');
+      const txt = `${tpFontSize}px`;
+      if (el) el.textContent = txt;
+      if (elM) elM.textContent = txt;
+    }
+
+    function toggleTpMirror() {
+      tpIsMirrored = !tpIsMirrored;
+      updateTpMirrorUI();
+    }
+
+    function updateTpMirrorUI() {
+      const viewport = document.getElementById('tp-viewport');
+      if (viewport) viewport.style.transform = tpIsMirrored ? 'scaleX(-1)' : 'none';
+      const btn = document.getElementById('btn-tp-mirror');
+      const btnM = document.getElementById('btn-tp-mirror-m');
+      if (btn) {
+        if (tpIsMirrored) {
+          btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-500');
+          btn.classList.remove('bg-zinc-900', 'text-zinc-300');
+        } else {
+          btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-500');
+          btn.classList.add('bg-zinc-900', 'text-zinc-300');
+        }
+      }
+      if (btnM) {
+        if (tpIsMirrored) {
+          btnM.classList.add('bg-emerald-600', 'text-white');
+          btnM.classList.remove('bg-zinc-800', 'text-zinc-300');
+        } else {
+          btnM.classList.remove('bg-emerald-600', 'text-white');
+          btnM.classList.add('bg-zinc-800', 'text-zinc-300');
+        }
+      }
+    }
+
+    function toggleTpFullscreen() {
+      const modal = document.getElementById('modal-teleprompter');
+      if (!modal) return;
+      if (!document.fullscreenElement) {
+        modal.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    function updateTpPlayPauseUI() {
+      const btn = document.getElementById('btn-tp-toggle-play');
+      const label = document.getElementById('tp-label-play');
+      const icon = document.getElementById('tp-icon-play');
+      if (!btn || !label) return;
+
+      if (tpIsPlaying) {
+        btn.className = "flex-1 py-3.5 px-6 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-black text-sm tracking-wide shadow-lg shadow-amber-950/50 flex items-center justify-center gap-2 transition active:scale-98";
+        label.textContent = "PAUSE (SPACE)";
+        if (icon) icon.setAttribute('data-lucide', 'pause');
+      } else {
+        btn.className = "flex-1 py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm tracking-wide shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2 transition active:scale-98";
+        label.textContent = "START SCROLL (SPACE)";
+        if (icon) icon.setAttribute('data-lucide', 'play');
+      }
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+
+    function updateTpProgress(percent) {
+      const bar = document.getElementById('tp-progress-bar');
+      if (bar) bar.style.width = `${percent}%`;
+    }
+
     // --- EVENT LISTENERS ---
     function bindEvents() {
       btnSubmitIdea.addEventListener('click', handleIdeaSubmit);
@@ -3668,6 +4198,24 @@ Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, 
         btn.addEventListener('click', toggleTheme);
       });
       window.addEventListener('keydown', (e) => {
+        const tpModal = document.getElementById('modal-teleprompter');
+        if (tpModal && !tpModal.classList.contains('hidden')) {
+          if (e.code === 'Space') {
+            e.preventDefault();
+            toggleTeleprompterPlay();
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            closeTeleprompter();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            changeTpSpeed(10);
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            changeTpSpeed(-10);
+          }
+          return;
+        }
+
         if ((e.key === 't' || e.key === 'T') && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
           toggleTheme();
         }
@@ -3745,6 +4293,43 @@ Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, 
       document.getElementById('btn-export-ledger-excel')?.addEventListener('click', exportLedgerToExcel);
       document.getElementById('btn-close-script-viewer')?.addEventListener('click', closeScriptViewer);
       document.getElementById('btn-copy-script')?.addEventListener('click', copyGeneratedScript);
+      document.getElementById('btn-open-teleprompter')?.addEventListener('click', () => {
+        openTeleprompter(currentActiveScriptText, currentActiveScriptIdea);
+      });
+
+      // Teleprompter Controls
+      document.getElementById('btn-tp-close')?.addEventListener('click', closeTeleprompter);
+      document.getElementById('btn-tp-toggle-play')?.addEventListener('click', toggleTeleprompterPlay);
+      document.getElementById('btn-tp-restart')?.addEventListener('click', resetTeleprompter);
+      document.getElementById('tp-viewport')?.addEventListener('click', toggleTeleprompterPlay);
+
+      // Speed Controls
+      document.getElementById('btn-tp-speed-dec')?.addEventListener('click', () => changeTpSpeed(-10));
+      document.getElementById('btn-tp-speed-inc')?.addEventListener('click', () => changeTpSpeed(10));
+      document.getElementById('btn-tp-speed-dec-m')?.addEventListener('click', () => changeTpSpeed(-10));
+      document.getElementById('btn-tp-speed-inc-m')?.addEventListener('click', () => changeTpSpeed(10));
+
+      // Font Controls
+      document.getElementById('btn-tp-font-dec')?.addEventListener('click', () => changeTpFontSize(-3));
+      document.getElementById('btn-tp-font-inc')?.addEventListener('click', () => changeTpFontSize(3));
+      document.getElementById('btn-tp-font-dec-m')?.addEventListener('click', () => changeTpFontSize(-3));
+      document.getElementById('btn-tp-font-inc-m')?.addEventListener('click', () => changeTpFontSize(3));
+
+      // Mirror & Fullscreen
+      document.getElementById('btn-tp-mirror')?.addEventListener('click', toggleTpMirror);
+      document.getElementById('btn-tp-mirror-m')?.addEventListener('click', toggleTpMirror);
+      document.getElementById('btn-tp-fullscreen')?.addEventListener('click', toggleTpFullscreen);
+
+      // Post-take actions
+      document.getElementById('btn-tp-mark-filmed')?.addEventListener('click', markTeleprompterVideoAsFilmed);
+      document.getElementById('btn-tp-retake')?.addEventListener('click', () => {
+        document.getElementById('tp-take-complete-overlay')?.classList.add('hidden');
+        resetTeleprompter();
+      });
+      document.getElementById('btn-tp-close-complete')?.addEventListener('click', () => {
+        document.getElementById('tp-take-complete-overlay')?.classList.add('hidden');
+        closeTeleprompter();
+      });
 
       document.querySelectorAll('.ledger-type-btn').forEach(btn => {
         btn.addEventListener('click', () => {
