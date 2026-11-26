@@ -25,6 +25,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- 2. Configure Tailwind for class-based dark mode -->
   <script>
@@ -887,12 +888,92 @@
           </select>
         </div>
 
-        <!-- Multi-Device Sync -->
+        <!-- 2. REAL-TIME SUPABASE CLOUD SYNC (RECOMMENDED) -->
+        <div class="p-3.5 bg-emerald-50/50 dark:bg-emerald-950/25 rounded-xl border border-emerald-300 dark:border-emerald-700/60 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              2. REAL-TIME CLOUD DATABASE (SUPABASE)
+            </label>
+            <button id="btn-toggle-supabase-sql" type="button" class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 underline">
+              SQL Setup (1-Click)
+            </button>
+          </div>
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Instant 2-way real-time sync across your Phone & PC. When you dump an idea outside, your PC updates live in milliseconds with zero manual loading.
+          </p>
+
+          <div class="space-y-2">
+            <div>
+              <label class="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider mb-1">Supabase Project URL</label>
+              <input 
+                id="input-supabase-url" 
+                type="url" 
+                placeholder="https://your-project.supabase.co" 
+                class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 font-mono text-xs outline-none focus:border-zinc-400"
+              >
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider mb-1">Supabase Anon Public Key</label>
+              <input 
+                id="input-supabase-key" 
+                type="password" 
+                placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." 
+                class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 font-mono text-xs outline-none focus:border-zinc-400"
+              >
+            </div>
+          </div>
+
+          <!-- SQL Guide Box -->
+          <div id="supabase-sql-box" class="hidden p-3.5 bg-white dark:bg-[#0c0c0e] rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2 text-xs">
+            <p class="font-bold text-zinc-800 dark:text-zinc-200">2-Minute Setup on Supabase (100% Free Tier):</p>
+            <ol class="list-decimal pl-4 space-y-1 text-zinc-600 dark:text-zinc-400">
+              <li>Open <a href="https://supabase.com" target="_blank" class="underline font-bold text-emerald-600 dark:text-emerald-400">supabase.com</a> and create a free project.</li>
+              <li>Click <strong>SQL Editor</strong> in the left sidebar $\rightarrow$ <strong>New query</strong>.</li>
+              <li>Paste the SQL script below and click <strong>Run</strong>:</li>
+            </ol>
+            <textarea readonly rows="6" class="w-full text-[11px] font-mono p-2.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-800 dark:text-zinc-200 select-all custom-scrollbar">create table if not exists ideas (
+  id text primary key,
+  title text,
+  raw text,
+  category text,
+  alignment_score numeric,
+  "when" text,
+  "where" text,
+  how jsonb,
+  manager_verdict text,
+  completed boolean default false,
+  completed_at text,
+  created_at text
+);
+create table if not exists app_state (
+  key text primary key,
+  value jsonb,
+  updated_at timestamptz default now()
+);
+alter publication supabase_realtime add table ideas;
+alter publication supabase_realtime add table app_state;
+alter table ideas enable row level security;
+create policy "Allow all ideas" on ideas for all using (true) with check (true);
+alter table app_state enable row level security;
+create policy "Allow all state" on app_state for all using (true) with check (true);</textarea>
+            <p class="text-zinc-500 text-[11px]">4. Go to <strong>Project Settings $\rightarrow$ API</strong>, copy <strong>Project URL</strong> & <strong>anon public key</strong>, and paste them above!</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <span id="supabase-test-status" class="text-xs font-semibold"></span>
+            <button id="btn-test-supabase" type="button" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-xs shadow-xs transition">
+              Connect & Test Live
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Multi-Device Google Sheet Sync (Fallback) -->
         <div class="p-3 bg-zinc-50 dark:bg-[#0c0c0e] rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-2">
           <div class="flex items-center justify-between">
             <label class="font-semibold text-zinc-700 dark:text-zinc-300 font-mono text-[11px] flex items-center gap-1.5">
-              <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i>
-              2. MULTI-DEVICE GOOGLE SHEET SYNC (2-WAY)
+              <i data-lucide="cloud" class="w-3.5 h-3.5 text-zinc-500"></i>
+              3. ALTERNATIVE: GOOGLE SHEET SYNC
             </label>
             <button id="btn-toggle-guide" type="button" class="text-[11px] text-zinc-600 dark:text-zinc-400 underline">
               Setup Instructions
@@ -1149,8 +1230,11 @@
       apiKey: '',
       model: 'gemini-2.5-flash',
       webhookUrl: '',
-      autoSyncSheet: false
+      autoSyncSheet: false,
+      supabaseUrl: '',
+      supabaseKey: ''
     }));
+    let supabaseClient = null;
     let focusState = JSON.parse(localStorage.getItem(STORAGE_KEY_FOCUS) || 'null');
     let focusTimerInterval = null;
 
@@ -1188,6 +1272,12 @@
     const inputWebhookUrl = document.getElementById('input-webhook-url');
     const checkAutoSheet = document.getElementById('check-auto-sheet');
     const apiTestStatus = document.getElementById('api-test-status');
+    const inputSupabaseUrl = document.getElementById('input-supabase-url');
+    const inputSupabaseKey = document.getElementById('input-supabase-key');
+    const btnTestSupabase = document.getElementById('btn-test-supabase');
+    const supabaseTestStatus = document.getElementById('supabase-test-status');
+    const btnToggleSupabaseSql = document.getElementById('btn-toggle-supabase-sql');
+    const supabaseSqlBox = document.getElementById('supabase-sql-box');
     const webhookTestStatus = document.getElementById('webhook-test-status');
     const guideBox = document.getElementById('guide-box');
 
@@ -1401,6 +1491,7 @@
     function init() {
       initPinLock();
       checkUrlPairing();
+      initSupabase();
       lucide.createIcons();
       updateThemeUI(document.documentElement.classList.contains('dark'));
       updateGoalsPreview();
@@ -1497,6 +1588,7 @@
       renderMetrics();
       closeMetricsModal();
       cloudPush('save_metrics', { metrics });
+      syncStateToSupabase('metrics', metrics);
     }
 
     // --- 1-CLICK EXCEL (.XLSX) EXPORT (SHEETJS) ---
@@ -1540,6 +1632,187 @@
       XLSX.writeFile(workbook, fileName);
     }
 
+    // --- REAL-TIME SUPABASE CLOUD ENGINE ---
+    function initSupabase() {
+      if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+        console.warn("Supabase library not yet ready");
+        return;
+      }
+      if (!settings.supabaseUrl || !settings.supabaseKey) {
+        if (!settings.webhookUrl) {
+          updateCloudStatus('offline', 'Local Mode');
+        }
+        return;
+      }
+
+      try {
+        supabaseClient = window.supabase.createClient(settings.supabaseUrl, settings.supabaseKey);
+        updateCloudStatus('syncing', 'Connecting...');
+
+        pullFromSupabase().then(() => {
+          updateCloudStatus('synced', 'Supabase Live');
+          setupSupabaseRealtime();
+        }).catch(err => {
+          console.warn("Initial Supabase pull error:", err);
+          updateCloudStatus('error', 'Supabase Error');
+        });
+      } catch (err) {
+        console.error("Supabase init error:", err);
+        updateCloudStatus('error', 'Config Error');
+      }
+    }
+
+    async function pullFromSupabase() {
+      if (!supabaseClient) return;
+      
+      const { data: remoteIdeas, error: ideasErr } = await supabaseClient
+        .from('ideas')
+        .select('*');
+
+      if (!ideasErr && Array.isArray(remoteIdeas)) {
+        const remoteMap = new Map(remoteIdeas.map(i => [i.id, i]));
+        ideas.forEach(local => {
+          if (!remoteMap.has(local.id)) {
+            remoteMap.set(local.id, local);
+            supabaseClient.from('ideas').upsert(local).then();
+          }
+        });
+        ideas = Array.from(remoteMap.values());
+        ideas.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+        saveIdeas();
+        renderIdeas();
+      }
+
+      const { data: stateRows, error: stateErr } = await supabaseClient
+        .from('app_state')
+        .select('*');
+
+      if (!stateErr && Array.isArray(stateRows)) {
+        stateRows.forEach(row => {
+          if (row.key === 'metrics' && row.value) {
+            metrics = { ...DEFAULT_METRICS, ...metrics, ...row.value };
+            localStorage.setItem(STORAGE_KEY_METRICS, JSON.stringify(metrics));
+            renderMetrics();
+          }
+          if (row.key === 'goals' && row.value) {
+            goals = { ...SRI_LANKA_MANDALA_PRESET, ...goals, ...row.value };
+            localStorage.setItem(STORAGE_KEY_GOALS, JSON.stringify(goals));
+            updateGoalsPreview();
+          }
+        });
+      }
+    }
+
+    function setupSupabaseRealtime() {
+      if (!supabaseClient) return;
+      try {
+        supabaseClient
+          .channel('public:ideas')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'ideas' }, payload => {
+            if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+              const updatedIdea = payload.new;
+              const idx = ideas.findIndex(i => i.id === updatedIdea.id);
+              if (idx !== -1) {
+                ideas[idx] = updatedIdea;
+              } else {
+                ideas.unshift(updatedIdea);
+              }
+              ideas.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+              saveIdeas();
+              renderIdeas();
+              showToast("⚡ Realtime sync: Task updated from your other device!");
+            } else if (payload.eventType === 'DELETE') {
+              const deletedId = payload.old.id;
+              ideas = ideas.filter(i => i.id !== deletedId);
+              saveIdeas();
+              renderIdeas();
+            }
+          })
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'app_state' }, payload => {
+            if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+              const row = payload.new;
+              if (row.key === 'metrics' && row.value) {
+                metrics = { ...DEFAULT_METRICS, ...metrics, ...row.value };
+                localStorage.setItem(STORAGE_KEY_METRICS, JSON.stringify(metrics));
+                renderMetrics();
+              }
+              if (row.key === 'goals' && row.value) {
+                goals = { ...SRI_LANKA_MANDALA_PRESET, ...goals, ...row.value };
+                localStorage.setItem(STORAGE_KEY_GOALS, JSON.stringify(goals));
+                updateGoalsPreview();
+              }
+            }
+          })
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              updateCloudStatus('synced', 'Supabase Live');
+            }
+          });
+      } catch (err) {
+        console.warn("Realtime channel subscription error:", err);
+      }
+    }
+
+    async function syncToSupabase(idea, action = 'upsert') {
+      if (!supabaseClient) return;
+      try {
+        if (action === 'delete') {
+          await supabaseClient.from('ideas').delete().eq('id', idea.id);
+        } else {
+          await supabaseClient.from('ideas').upsert(idea);
+        }
+      } catch (err) {
+        console.warn("Supabase sync error:", err);
+      }
+    }
+
+    async function syncStateToSupabase(key, value) {
+      if (!supabaseClient) return;
+      try {
+        await supabaseClient.from('app_state').upsert({ key, value, updated_at: new Date().toISOString() });
+      } catch (err) {
+        console.warn("Supabase state sync error:", err);
+      }
+    }
+
+    async function testSupabaseConnection() {
+      const url = inputSupabaseUrl ? inputSupabaseUrl.value.trim() : '';
+      const key = inputSupabaseKey ? inputSupabaseKey.value.trim() : '';
+      if (!supabaseTestStatus) return;
+
+      if (!url || !key) {
+        supabaseTestStatus.textContent = "Please enter both URL and Anon Key.";
+        supabaseTestStatus.className = "text-xs font-semibold text-rose-600";
+        return;
+      }
+
+      supabaseTestStatus.textContent = "Connecting to Supabase...";
+      supabaseTestStatus.className = "text-xs font-semibold text-amber-600 animate-pulse";
+
+      try {
+        const testClient = window.supabase.createClient(url, key);
+        const { data, error } = await testClient.from('ideas').select('id').limit(1);
+        if (error) {
+          if (error.code === '42P01') {
+            supabaseTestStatus.textContent = "⚠️ Connected, but table 'ideas' not found. Run the SQL snippet above!";
+            supabaseTestStatus.className = "text-xs font-semibold text-amber-600";
+          } else {
+            throw error;
+          }
+        } else {
+          supabaseTestStatus.textContent = "✅ Connected & Verified! Real-time sync ready.";
+          supabaseTestStatus.className = "text-xs font-semibold text-emerald-600 dark:text-emerald-400 font-bold";
+          settings.supabaseUrl = url;
+          settings.supabaseKey = key;
+          localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+          initSupabase();
+        }
+      } catch (err) {
+        supabaseTestStatus.textContent = `❌ Connection failed: ${err.message || 'Invalid URL or Key'}`;
+        supabaseTestStatus.className = "text-xs font-semibold text-rose-600";
+      }
+    }
+
     // --- MULTI-DEVICE 2-WAY CLOUD SYNC & PAIRING ---
     function checkUrlPairing() {
       const params = new URLSearchParams(window.location.search);
@@ -1547,6 +1820,13 @@
       const apiKey = params.get('key');
       let paired = false;
 
+      const sbUrl = params.get('sb_url');
+      const sbKey = params.get('sb_key');
+      if (sbUrl && sbKey) {
+        settings.supabaseUrl = decodeURIComponent(sbUrl);
+        settings.supabaseKey = decodeURIComponent(sbKey);
+        paired = true;
+      }
       if (syncUrl) {
         settings.webhookUrl = decodeURIComponent(syncUrl);
         settings.autoSyncSheet = true;
@@ -1686,7 +1966,9 @@
       const baseUrl = window.location.origin + window.location.pathname;
       const syncParam = encodeURIComponent(settings.webhookUrl || '');
       const keyParam = encodeURIComponent(settings.apiKey || '');
-      const pairUrl = `${baseUrl}?sync=${syncParam}&key=${keyParam}`;
+      const sbUrlParam = encodeURIComponent(settings.supabaseUrl || '');
+      const sbKeyParam = encodeURIComponent(settings.supabaseKey || '');
+      const pairUrl = `${baseUrl}?sync=${syncParam}&key=${keyParam}&sb_url=${sbUrlParam}&sb_key=${sbKeyParam}`;
 
       qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(pairUrl)}`;
       statusP.textContent = "Scan or click copy to pair any device.";
@@ -1702,7 +1984,9 @@
       const baseUrl = window.location.origin + window.location.pathname;
       const syncParam = encodeURIComponent(settings.webhookUrl || '');
       const keyParam = encodeURIComponent(settings.apiKey || '');
-      const pairUrl = `${baseUrl}?sync=${syncParam}&key=${keyParam}`;
+      const sbUrlParam = encodeURIComponent(settings.supabaseUrl || '');
+      const sbKeyParam = encodeURIComponent(settings.supabaseKey || '');
+      const pairUrl = `${baseUrl}?sync=${syncParam}&key=${keyParam}&sb_url=${sbUrlParam}&sb_key=${sbKeyParam}`;
 
       navigator.clipboard.writeText(pairUrl);
       const statusP = document.getElementById('pairing-link-status');
@@ -2187,6 +2471,7 @@
         idea.completed_at = new Date().toISOString();
         saveIdeas();
         syncIdeaToExternal(idea);
+      syncToSupabase(idea, 'upsert');
       }
       playChime('bell');
       focusState = null;
@@ -2680,6 +2965,7 @@ Respond STRICTLY in valid JSON matching this schema:
         saveIdeas();
         renderIdeas();
         cloudPush('update_idea', { idea });
+        syncToSupabase(idea, 'upsert');
       });
 
       card.querySelector('.btn-copy-plan').addEventListener('click', () => {
@@ -2704,6 +2990,7 @@ Respond STRICTLY in valid JSON matching this schema:
           saveIdeas();
           renderIdeas();
           cloudPush('delete_idea', { id: deletedId });
+          syncToSupabase(idea, 'delete');
         }
       });
 
@@ -2734,12 +3021,15 @@ Respond STRICTLY in valid JSON matching this schema:
       updateGoalsPreview();
       closeGoalsModal();
       cloudPush('save_goals', { goals });
+      syncStateToSupabase('goals', goals);
     }
 
     function openSettingsModal() {
       inputApiKey.value = settings.apiKey || '';
       selectModel.value = settings.model || 'gemini-2.5-flash';
       inputWebhookUrl.value = settings.webhookUrl || '';
+      if (inputSupabaseUrl) inputSupabaseUrl.value = settings.supabaseUrl || '';
+      if (inputSupabaseKey) inputSupabaseKey.value = settings.supabaseKey || '';
       checkAutoSheet.checked = !!settings.autoSyncSheet;
       apiTestStatus.classList.add('hidden');
       webhookTestStatus.classList.add('hidden');
@@ -2754,6 +3044,9 @@ Respond STRICTLY in valid JSON matching this schema:
         settings.apiKey = currentKey;
         settings.model = selectModel.value;
         settings.webhookUrl = inputWebhookUrl.value.trim();
+      if (inputSupabaseUrl) settings.supabaseUrl = inputSupabaseUrl.value.trim();
+      if (inputSupabaseKey) settings.supabaseKey = inputSupabaseKey.value.trim();
+      initSupabase();
         settings.autoSyncSheet = checkAutoSheet.checked;
         localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
       }
@@ -2962,6 +3255,10 @@ Respond STRICTLY in valid JSON matching this schema:
       document.getElementById('btn-close-settings').addEventListener('click', closeSettingsModal);
       document.getElementById('btn-save-settings').addEventListener('click', saveSettingsModal);
       document.getElementById('btn-test-api').addEventListener('click', testGeminiApiKey);
+      document.getElementById('btn-test-supabase')?.addEventListener('click', testSupabaseConnection);
+      document.getElementById('btn-toggle-supabase-sql')?.addEventListener('click', () => {
+        document.getElementById('supabase-sql-box')?.classList.toggle('hidden');
+      });
       document.getElementById('btn-toggle-guide').addEventListener('click', () => {
         guideBox.classList.toggle('hidden');
       });
