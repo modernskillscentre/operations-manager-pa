@@ -1316,11 +1316,16 @@ create policy "Allow all state" on app_state for all using (true) with check (tr
         Generating your 6-beat script...
       </div>
 
-      <div class="pt-2 flex justify-between items-center gap-2 border-t border-zinc-100 dark:border-zinc-800 shrink-0">
-        <button id="btn-open-teleprompter" type="button" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
-          <i data-lucide="video" class="w-3.5 h-3.5"></i> Film in Teleprompter Mode
-        </button>
-        <button id="btn-copy-script" type="button" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
+      <div class="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-100 dark:border-zinc-800 shrink-0">
+        <div class="flex items-center gap-2">
+          <button id="btn-open-teleprompter" type="button" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
+            <i data-lucide="video" class="w-3.5 h-3.5"></i> Film in Teleprompter
+          </button>
+          <button id="btn-copy-freebie-prompt" type="button" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5" title="Copy Gemini Prompt to generate the 1-Page Cheat Sheet Lead Magnet">
+            <i data-lucide="gift" class="w-3.5 h-3.5"></i> Copy Freebie Prompt (Gemini)
+          </button>
+        </div>
+        <button id="btn-copy-script" type="button" class="px-3.5 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
           <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script
         </button>
       </div>
@@ -3819,6 +3824,38 @@ Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, 
       });
     }
 
+    function copyFreebiePrompt() {
+      const content = document.getElementById('script-viewer-content');
+      const scriptText = content ? content.textContent : '';
+      const ideaTitle = currentActiveScriptIdea ? (currentActiveScriptIdea.raw || currentActiveScriptIdea.title) : 'English Speaking Lesson';
+
+      let beat5Mention = '';
+      if (scriptText) {
+        const lines = scriptText.split('\n');
+        const b5Line = lines.find(l => l.toLowerCase().includes('free resource') || l.toLowerCase().includes('beat 5'));
+        if (b5Line) beat5Mention = `\nPROMISED IN TIKTOK (BEAT 5): ${b5Line.trim()}`;
+      }
+
+      const promptForGemini = `Act as an expert English curriculum designer and educational marketer for "English Tree".
+I just created a 6-beat TikTok video on the topic:
+"${ideaTitle}"${beat5Mention}
+
+Create a high-value, comprehensive, and printable 1-Page Cheat Sheet / PDF Lead Magnet that I can deliver to students who comment on this video.
+
+REQUIRED STRUCTURE:
+1. 📌 CATCHY TITLE & 2-SENTENCE CORE RULE (Quick overview so they understand immediately).
+2. ❌ COMMON MISTAKES vs ✅ HIGH-STATUS NATIVE PHRASES (A clean Markdown comparison table with 5 clear contrast examples).
+3. 🧠 3-STEP INSTANT RECALL FORMULA (A simple mental shortcut they can use when nervous or speaking on the spot).
+4. 🗣️ 10 REAL-WORLD SENTENCE TEMPLATES (Ready-to-use speaking scripts for interviews, workplace meetings, and daily conversations).
+5. 🚀 ENGLISH TREE FOOTER NOTE (An encouraging 2-line invitation: "Want to practice these live with personal feedback? Join the English Tree Speaking Intensive.").
+
+Format everything in clean, elegant Markdown with bullet points, bold key terms, and high readability so it is 100% ready to copy into Google Docs / Canva or save directly as a PDF.`;
+
+      navigator.clipboard.writeText(promptForGemini).then(() => {
+        showToast("🎁 Freebie prompt copied! Paste into Gemini to get your full cheat sheet.");
+      });
+    }
+
     // --- TELEPROMPTER ENGINE ---
     async function requestTpWakeLock() {
       try {
@@ -4293,6 +4330,7 @@ Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, 
       document.getElementById('btn-export-ledger-excel')?.addEventListener('click', exportLedgerToExcel);
       document.getElementById('btn-close-script-viewer')?.addEventListener('click', closeScriptViewer);
       document.getElementById('btn-copy-script')?.addEventListener('click', copyGeneratedScript);
+      document.getElementById('btn-copy-freebie-prompt')?.addEventListener('click', copyFreebiePrompt);
       document.getElementById('btn-open-teleprompter')?.addEventListener('click', () => {
         openTeleprompter(currentActiveScriptText, currentActiveScriptIdea);
       });
