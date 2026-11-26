@@ -294,6 +294,10 @@
         </button>
 
         <!-- Excel Export -->
+        <button id="btn-open-ledger" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Runway & Cash Journal">
+          <i data-lucide="wallet" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i>
+          <span class="hidden sm:inline text-xs">Ledger</span>
+        </button>
         <button id="btn-quick-excel" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-800 shadow-xs transition" title="Export to Excel (.xlsx)">
           <i data-lucide="sheet" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i>
           <span class="hidden sm:inline text-xs">Excel</span>
@@ -500,6 +504,9 @@
             <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">Protect capital until 1.5M Car Down Payment & 2M House Funds are locked</p>
           </div>
         </div>
+        <button id="btn-quick-log-cash" type="button" class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 text-xs font-bold flex items-center gap-1.5 hover:bg-emerald-100 transition active:scale-95 shadow-xs">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Log Cash Flow
+        </button>
         <button id="btn-open-metrics" type="button" class="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-semibold text-zinc-700 dark:text-zinc-200 flex items-center gap-1.5 transition active:scale-95 shadow-xs">
           <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Update Baseline
         </button>
@@ -1182,6 +1189,141 @@ create policy "Allow all state" on app_state for all using (true) with check (tr
     </div>
   </div>
 
+  <!-- MODAL: RUNWAY & INVESTMENT JOURNAL -->
+  <div id="modal-ledger" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#141418] border border-zinc-200 dark:border-zinc-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3 shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs shrink-0">
+            <i data-lucide="wallet" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">Runway & Cash Journal</h2>
+            <p class="text-xs text-zinc-500">Track real cash inflows & strategic spending toward your Sri Lanka goals</p>
+          </div>
+        </div>
+        <button id="btn-close-ledger" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Financial Snapshot Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 shrink-0 text-xs">
+        <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
+          <span class="text-zinc-500 font-bold block uppercase text-[10px] tracking-wider">Total Inflow</span>
+          <span id="ledger-total-income" class="text-sm sm:text-base font-bold text-emerald-600 dark:text-emerald-400 font-mono">Rs. 0</span>
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
+          <span class="text-zinc-500 font-bold block uppercase text-[10px] tracking-wider">Strategic Spend</span>
+          <span id="ledger-total-strategic" class="text-sm sm:text-base font-bold text-blue-600 dark:text-blue-400 font-mono">Rs. 0</span>
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
+          <span class="text-zinc-500 font-bold block uppercase text-[10px] tracking-wider">Family Living</span>
+          <span id="ledger-total-family" class="text-sm sm:text-base font-bold text-purple-600 dark:text-purple-400 font-mono">Rs. 0</span>
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
+          <span class="text-zinc-500 font-bold block uppercase text-[10px] tracking-wider">Net Cash Position</span>
+          <span id="ledger-net-cash" class="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 font-mono">Rs. 0</span>
+        </div>
+      </div>
+
+      <!-- Fast Entry Form -->
+      <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/80 space-y-3 shrink-0">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="plus" class="w-3.5 h-3.5 text-emerald-500"></i> Record Cash Flow
+          </span>
+          <span class="text-[11px] text-zinc-500 font-medium">Family expenses are sacred & never questioned by AI</span>
+        </div>
+
+        <!-- Type Selector -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs font-semibold">
+          <button type="button" data-ledger-type="INCOME" class="ledger-type-btn py-1.5 px-2 rounded-lg bg-emerald-600 text-white border border-emerald-600 flex items-center justify-center gap-1">
+            🟢 Income (+)
+          </button>
+          <button type="button" data-ledger-type="STRATEGIC" class="ledger-type-btn py-1.5 px-2 rounded-lg bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-1">
+            🔵 Strategic (-)
+          </button>
+          <button type="button" data-ledger-type="FAMILY" class="ledger-type-btn py-1.5 px-2 rounded-lg bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-1" title="Family expenses are strictly for mathematical data tracking, never questioned">
+            🟣 Family (-)
+          </button>
+          <button type="button" data-ledger-type="OPEX" class="ledger-type-btn py-1.5 px-2 rounded-lg bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-1">
+            🟡 Operating (-)
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+          <div class="sm:col-span-4">
+            <label class="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 mb-1">Amount (LKR)</label>
+            <input id="input-ledger-amount" type="number" placeholder="e.g. 25000" class="w-full text-sm font-mono font-bold p-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-900 dark:text-zinc-100 outline-none focus:border-zinc-400">
+          </div>
+          <div class="sm:col-span-8">
+            <label class="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 mb-1">Description / Purpose</label>
+            <input id="input-ledger-desc" type="text" placeholder="e.g. English Tree Class Fee or TikTok Growth Consultation" class="w-full text-sm p-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-900 dark:text-zinc-100 outline-none focus:border-zinc-400">
+          </div>
+        </div>
+
+        <div id="ledger-strategic-takeaways-box" class="hidden">
+          <label class="block text-[11px] font-bold text-blue-600 dark:text-blue-400 mb-1">Key Advice / Takeaways (AI turns this into DO NOW tasks!):</label>
+          <textarea id="input-ledger-takeaways" rows="2" placeholder="e.g. Focus on 30s idiom hooks, ignore long videos" class="w-full text-xs p-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-800 dark:text-zinc-200 outline-none resize-none"></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <label class="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 cursor-pointer">
+            <input type="checkbox" id="check-ledger-sync-metrics" checked class="rounded border-zinc-300 text-zinc-900">
+            <span id="ledger-sync-label">Allocate income to Car & House funds</span>
+          </label>
+          <button id="btn-save-ledger-entry" type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 transition active:scale-95 shadow-sm">
+            Record Transaction
+          </button>
+        </div>
+      </div>
+
+      <!-- Transactions Log List -->
+      <div class="flex-1 overflow-y-auto custom-scrollbar space-y-2 pr-1">
+        <div class="flex items-center justify-between text-xs pb-1 border-b border-zinc-100 dark:border-zinc-800">
+          <span class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-[11px]">Recent Transactions</span>
+          <button id="btn-export-ledger-excel" type="button" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+            <i data-lucide="sheet" class="w-3.5 h-3.5"></i> Export Excel (.xlsx)
+          </button>
+        </div>
+        <div id="ledger-entries-list" class="space-y-1.5">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: 6-BEAT SCRIPT VIEWER -->
+  <div id="modal-script-viewer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#141418] border border-zinc-200 dark:border-zinc-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3 shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs shrink-0">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-zinc-900 dark:text-zinc-100">6-Beat Content Script</h2>
+            <p class="text-xs text-zinc-500">Pain Point + Answer + Motivation + Course + Free Resource + CTA</p>
+          </div>
+        </div>
+        <button id="btn-close-script-viewer" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto custom-scrollbar p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 whitespace-pre-wrap font-sans" id="script-viewer-content">
+        Generating your 6-beat script...
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800 shrink-0">
+        <button id="btn-copy-script" type="button" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-950 rounded-xl font-bold text-xs shadow-sm transition active:scale-95 flex items-center gap-1.5">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script to Clipboard
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT LOGIC -->
   <script>
     // --- APP STATE & LOCALSTORAGE KEYS ---
@@ -1191,6 +1333,9 @@ create policy "Allow all state" on app_state for all using (true) with check (tr
     const STORAGE_KEY_FOCUS = 'brain_dump_focus_v1';
     const STORAGE_KEY_METRICS = 'brain_dump_metrics_v1';
     const STORAGE_KEY_PIN = 'om_security_pin_v1';
+    const STORAGE_KEY_LEDGER = 'brain_dump_ledger_v1';
+    let ledger = JSON.parse(localStorage.getItem(STORAGE_KEY_LEDGER) || '[]');
+    let selectedLedgerType = 'INCOME';
     const SESSION_KEY_UNLOCKED = 'om_session_unlocked_v1';
 
     let enteredPin = '';
@@ -1725,6 +1870,11 @@ create policy "Allow all state" on app_state for all using (true) with check (tr
             goals = { ...SRI_LANKA_MANDALA_PRESET, ...goals, ...row.value };
             localStorage.setItem(STORAGE_KEY_GOALS, JSON.stringify(goals));
             updateGoalsPreview();
+          }
+          if (row.key === 'ledger' && Array.isArray(row.value)) {
+            ledger = row.value;
+            localStorage.setItem(STORAGE_KEY_LEDGER, JSON.stringify(ledger));
+            renderLedger();
           }
         });
       }
@@ -2632,11 +2782,24 @@ CURRENT FINANCIAL & TRACTION REALITY (BOOTSTRAP PHASE 1):
 PHASE 1 EXECUTION PRIORITIES (Ignore Phase 2 10M Safety Net & Studio Upgrades for now):
 1. CAR DOWN PAYMENT: 1.5M LKR upfront cash.
 2. HOUSE COMPLETION: 2.0M LKR (8 construction phases).
-3. TIKTOK FAST-CASH ENGINE: Convert 28.5K audience into paying English Tree / online students to fund the 1.5M car deposit + 2M house.
+3. TIKTOK / SOCIAL MEDIA STUDENT FUNNEL: Convert 28.5K audience into paying English Tree / online students to fund the 1.5M car deposit + 2M house.
+
+SACRED FAMILY & LIVING RULE (CRITICAL):
+- FAMILY EXPENSES & BABY NEEDS ARE SACRED: Personal living, family protection, groceries, health, and loved ones are NEVER questioned, critiqued, or challenged by the AI. They are strictly for mathematical cashflow & runway data. Never judge, lecture, or call family spending a distraction.
+- You ONLY scrutinize premature business hardware/gadgets (e.g., buying extra mics/monitors before cash targets are hit) vs high-ROI strategic investments (consultations/advisory).
+
+CONTENT EXECUTION BLUEPRINT (6-BEAT VIRAL EDUCATION FORMULA):
+If the user's idea relates to social media, TikTok, YouTube, teaching English, or student acquisition, format the 3 micro-steps in "how" or provide a script following this exact 6-beat sequence:
+1. Pain Point: (0-3s relatable hook or common speaking freeze)
+2. Answer (Action Plan): (4-20s bite-sized, practical solution or formula)
+3. Motivation Punch Line: (20-25s empowering confidence booster)
+4. Course Indirectly Marketed: (25-30s natural tie-in to English Tree / Online Class)
+5. Free Resource: (30-35s lead magnet PDF or cheat sheet)
+6. CTA: (35-40s comment, DM, or link-in-bio prompt)
 
 STRICT ZERO-CAPITAL BOOTSTRAP GUARDRAILS:
 - The user has minimal spare cash right now.
-- NEVER recommend buying expensive gear, software subscriptions, paid ads, or hiring agencies.
+- NEVER recommend buying expensive hardware gear, software subscriptions, paid ads, or hiring agencies.
 - Mandate 100% zero-cost execution: Phone camera, natural light, free CapCut, WhatsApp/Zoom cohorts.
 - High priority to ideas that generate cash FAST from the existing 28.5K TikTok audience.
 
@@ -2916,6 +3079,9 @@ Respond STRICTLY in valid JSON matching this schema:
                 <i data-lucide="circle" class="w-4 h-4"></i>
               </button>
             `}
+            <button class="btn-generate-script flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 hover:bg-emerald-100 transition active:scale-95 shadow-xs" title="Generate 6-Beat Script">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i> Script
+            </button>
             <button class="btn-copy-plan p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Copy Plan">
               <i data-lucide="copy" class="w-4 h-4"></i>
             </button>
@@ -2993,6 +3159,10 @@ Respond STRICTLY in valid JSON matching this schema:
         renderIdeas();
         cloudPush('update_idea', { idea });
         syncToSupabase(idea, 'upsert');
+      });
+
+      card.querySelector('.btn-generate-script')?.addEventListener('click', () => {
+        openScriptViewer(idea);
       });
 
       card.querySelector('.btn-copy-plan').addEventListener('click', () => {
@@ -3189,6 +3359,300 @@ Respond STRICTLY in valid JSON matching this schema:
       }
     }
 
+
+    // --- RUNWAY & INVESTMENT JOURNAL ENGINE ---
+    function openLedgerModal() {
+      const modal = document.getElementById('modal-ledger');
+      if (!modal) return;
+      renderLedger();
+      modal.classList.remove('hidden');
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+
+    function closeLedgerModal() {
+      const modal = document.getElementById('modal-ledger');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function selectLedgerType(type) {
+      selectedLedgerType = type;
+      document.querySelectorAll('.ledger-type-btn').forEach(btn => {
+        if (btn.dataset.ledgerType === type) {
+          btn.className = 'ledger-type-btn py-1.5 px-2 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold border border-zinc-900 dark:border-zinc-100 flex items-center justify-center gap-1 shadow-xs';
+        } else {
+          btn.className = 'ledger-type-btn py-1.5 px-2 rounded-lg bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-1 font-semibold';
+        }
+      });
+
+      const takeawaysBox = document.getElementById('ledger-strategic-takeaways-box');
+      if (takeawaysBox) {
+        if (type === 'STRATEGIC') {
+          takeawaysBox.classList.remove('hidden');
+        } else {
+          takeawaysBox.classList.add('hidden');
+        }
+      }
+
+      const syncLabel = document.getElementById('ledger-sync-label');
+      if (syncLabel) {
+        if (type === 'INCOME') {
+          syncLabel.textContent = "Allocate income to Car & House funds";
+        } else {
+          syncLabel.textContent = "Deduct expense from current cash reserve";
+        }
+      }
+    }
+
+    function renderLedger() {
+      const incomeTotal = ledger.filter(l => l.type === 'INCOME').reduce((sum, l) => sum + (Number(l.amount) || 0), 0);
+      const strategicTotal = ledger.filter(l => l.type === 'STRATEGIC').reduce((sum, l) => sum + (Number(l.amount) || 0), 0);
+      const familyTotal = ledger.filter(l => l.type === 'FAMILY').reduce((sum, l) => sum + (Number(l.amount) || 0), 0);
+      const opexTotal = ledger.filter(l => l.type === 'OPEX').reduce((sum, l) => sum + (Number(l.amount) || 0), 0);
+      const netCash = incomeTotal - (strategicTotal + familyTotal + opexTotal);
+
+      const elIncome = document.getElementById('ledger-total-income');
+      const elStrat = document.getElementById('ledger-total-strategic');
+      const elFam = document.getElementById('ledger-total-family');
+      const elNet = document.getElementById('ledger-net-cash');
+
+      if (elIncome) elIncome.textContent = `Rs. ${incomeTotal.toLocaleString()}`;
+      if (elStrat) elStrat.textContent = `Rs. ${strategicTotal.toLocaleString()}`;
+      if (elFam) elFam.textContent = `Rs. ${familyTotal.toLocaleString()}`;
+      if (elNet) elNet.textContent = `Rs. ${netCash.toLocaleString()}`;
+
+      const list = document.getElementById('ledger-entries-list');
+      if (!list) return;
+
+      if (ledger.length === 0) {
+        list.innerHTML = `<div class="text-center py-8 text-zinc-400 text-xs">No cashflow transactions recorded yet. Log your first class fee or consultation above.</div>`;
+        return;
+      }
+
+      list.innerHTML = ledger.slice(0, 30).map((entry, idx) => {
+        let badge = '';
+        let sign = '+';
+        let amountColor = 'text-emerald-600 dark:text-emerald-400';
+
+        if (entry.type === 'INCOME') {
+          badge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">INCOME</span>';
+          sign = '+';
+          amountColor = 'text-emerald-600 dark:text-emerald-400 font-bold';
+        } else if (entry.type === 'STRATEGIC') {
+          badge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300">STRATEGIC</span>';
+          sign = '-';
+          amountColor = 'text-blue-600 dark:text-blue-400 font-bold';
+        } else if (entry.type === 'FAMILY') {
+          badge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300">FAMILY</span>';
+          sign = '-';
+          amountColor = 'text-purple-600 dark:text-purple-400 font-bold';
+        } else {
+          badge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">OPEX</span>';
+          sign = '-';
+          amountColor = 'text-amber-600 dark:text-amber-400 font-bold';
+        }
+
+        return `
+          <div class="p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between text-xs gap-3">
+            <div class="flex items-center gap-2 truncate">
+              ${badge}
+              <div class="truncate">
+                <span class="font-bold text-zinc-900 dark:text-zinc-100 truncate block">${escapeHtml(entry.description)}</span>
+                <span class="text-[10px] text-zinc-400 font-mono">${new Date(entry.date || entry.created_at).toLocaleDateString()} ${entry.takeaways ? '• 💡 ' + escapeHtml(entry.takeaways) : ''}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="font-mono text-sm ${amountColor}">${sign}Rs. ${Number(entry.amount).toLocaleString()}</span>
+              <button onclick="deleteLedgerEntry('${entry.id}')" class="text-zinc-400 hover:text-rose-600 p-1 transition" title="Delete">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+
+    function saveLedgerEntry() {
+      const amountInput = document.getElementById('input-ledger-amount');
+      const descInput = document.getElementById('input-ledger-desc');
+      const takeawaysInput = document.getElementById('input-ledger-takeaways');
+      const syncMetricsCheck = document.getElementById('check-ledger-sync-metrics');
+
+      const amount = Number(amountInput.value) || 0;
+      const desc = descInput.value.trim();
+      const takeaways = takeawaysInput ? takeawaysInput.value.trim() : '';
+
+      if (amount <= 0 || !desc) {
+        alert("Please enter a valid amount and description.");
+        return;
+      }
+
+      const entry = {
+        id: 'txn_' + Date.now(),
+        date: new Date().toISOString(),
+        type: selectedLedgerType,
+        amount: amount,
+        description: desc,
+        takeaways: takeaways,
+        created_at: new Date().toISOString()
+      };
+
+      ledger.unshift(entry);
+      localStorage.setItem(STORAGE_KEY_LEDGER, JSON.stringify(ledger));
+
+      // Sync to Supabase state
+      syncStateToSupabase('ledger', ledger);
+
+      // If strategic investment had takeaways, convert into a DO NOW task
+      if (selectedLedgerType === 'STRATEGIC' && takeaways) {
+        const actionTask = {
+          id: 'idea_' + Date.now(),
+          title: 'Implement ' + (desc.length > 30 ? desc.slice(0, 30) + '...' : desc) + ' Advice',
+          raw: 'Takeaway from paid advisory (Rs. ' + amount.toLocaleString() + '): ' + takeaways,
+          category: 'DO_NOW',
+          alignment_score: 9,
+          when: 'Tonight / Tomorrow evening',
+          where: 'Operations / Studio',
+          how: [
+            'Step 1: Review consultant recommendation: ' + takeaways.slice(0, 60),
+            'Step 2: Execute direct action without delay',
+            'Step 3: Measure result & student/growth impact'
+          ],
+          manager_verdict: 'High-ROI execution on paid advisory: rapidly converting Rs. ' + amount.toLocaleString() + ' investment into revenue.',
+          completed: false,
+          created_at: new Date().toISOString()
+        };
+        ideas.unshift(actionTask);
+        saveIdeas();
+        renderIdeas();
+        syncToSupabase(actionTask, 'upsert');
+        showToast("💡 Advice converted into a DO NOW task!");
+      }
+
+      // If income and sync is checked, distribute to Car / House fund
+      if (selectedLedgerType === 'INCOME' && syncMetricsCheck && syncMetricsCheck.checked) {
+        // Allocate 50% to Car Down Payment and 50% to House
+        metrics.savedCar = (metrics.savedCar || 0) + Math.round(amount * 0.5);
+        metrics.savedHouse = (metrics.savedHouse || 0) + Math.round(amount * 0.5);
+        localStorage.setItem(STORAGE_KEY_METRICS, JSON.stringify(metrics));
+        renderMetrics();
+        syncStateToSupabase('metrics', metrics);
+        showToast("🎉 Rs. " + amount.toLocaleString() + " added to Car & House funds!");
+      } else {
+        showToast("Transaction recorded in Runway Journal.");
+      }
+
+      amountInput.value = '';
+      descInput.value = '';
+      if (takeawaysInput) takeawaysInput.value = '';
+
+      renderLedger();
+    }
+
+    function deleteLedgerEntry(id) {
+      if (confirm("Delete this transaction entry?")) {
+        ledger = ledger.filter(l => l.id !== id);
+        localStorage.setItem(STORAGE_KEY_LEDGER, JSON.stringify(ledger));
+        syncStateToSupabase('ledger', ledger);
+        renderLedger();
+      }
+    }
+
+    function exportLedgerToExcel() {
+      if (ledger.length === 0) {
+        alert("No ledger transactions recorded yet.");
+        return;
+      }
+      if (typeof XLSX === 'undefined') {
+        alert("Excel engine loading, please try again in a moment.");
+        return;
+      }
+
+      const rows = ledger.map(l => ({
+        "Date": new Date(l.date || l.created_at).toLocaleDateString(),
+        "Type": l.type,
+        "Amount (LKR)": l.type === 'INCOME' ? l.amount : -l.amount,
+        "Description": l.description,
+        "Takeaways / Notes": l.takeaways || ''
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(rows);
+      worksheet['!cols'] = [{ wch: 15 }, { wch: 15 }, { wch: 16 }, { wch: 40 }, { wch: 50 }];
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Runway Ledger");
+      XLSX.writeFile(workbook, `Runway_Ledger_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    }
+
+    // --- 6-BEAT SCRIPT VIEWER ENGINE ---
+    async function openScriptViewer(idea) {
+      const modal = document.getElementById('modal-script-viewer');
+      const content = document.getElementById('script-viewer-content');
+      if (!modal || !content) return;
+
+      modal.classList.remove('hidden');
+      content.textContent = "Writing your high-retention 6-beat TikTok script...";
+
+      const prompt = `You are an expert viral education scriptwriter for English Tree.
+Write a high-converting 30-40 second vertical short/TikTok script based on this idea:
+"${idea.raw || idea.title}"
+
+Strictly follow the user's 6-beat framework:
+1. 🎯 PAIN POINT (0-3s): Relatable, punchy hook addressing a common speaking/interview freeze.
+2. 💡 ANSWER / ACTION PLAN (4-20s): Clear, bite-sized rule or formula with a contrast example.
+3. 🔥 MOTIVATION PUNCH LINE (20-25s): Empowering confidence booster.
+4. 🏫 INDIRECT COURSE MENTION (25-30s): Subtle tie-in to English Tree / Online Intensive class.
+5. 🎁 FREE RESOURCE (30-35s): Free PDF cheat sheet / template lead magnet.
+6. 🚀 CTA (35-40s): Exact instruction to comment, DM, or check link in bio.
+
+Also include brief [B-Roll / CapCut on-screen text cues]. Make it sound spoken, energetic, and natural.`;
+
+      try {
+        const apiKey = settings.apiKey.trim();
+        const activeModel = settings.model || 'gemini-2.5-flash';
+        let scriptText = '';
+
+        if (apiKey) {
+          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${apiKey}`;
+          const resp = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }] })
+          });
+          const data = await resp.json();
+          scriptText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Failed to generate script.";
+        } else {
+          const resp = await fetch('/api/triage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, model: activeModel })
+          });
+          scriptText = await resp.text();
+        }
+
+        content.textContent = scriptText;
+      } catch (err) {
+        content.textContent = "Script generation failed: " + err.message;
+      }
+    }
+
+    function closeScriptViewer() {
+      const modal = document.getElementById('modal-script-viewer');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function copyGeneratedScript() {
+      const content = document.getElementById('script-viewer-content');
+      if (!content) return;
+      navigator.clipboard.writeText(content.textContent).then(() => {
+        showToast("✅ 6-Beat Script copied to clipboard!");
+      });
+    }
+
     // --- EVENT LISTENERS ---
     function bindEvents() {
       btnSubmitIdea.addEventListener('click', handleIdeaSubmit);
@@ -3274,6 +3738,19 @@ Respond STRICTLY in valid JSON matching this schema:
 
       // Metrics modal
       document.getElementById('btn-open-metrics')?.addEventListener('click', openMetricsModal);
+      document.getElementById('btn-open-ledger')?.addEventListener('click', openLedgerModal);
+      document.getElementById('btn-quick-log-cash')?.addEventListener('click', openLedgerModal);
+      document.getElementById('btn-close-ledger')?.addEventListener('click', closeLedgerModal);
+      document.getElementById('btn-save-ledger-entry')?.addEventListener('click', saveLedgerEntry);
+      document.getElementById('btn-export-ledger-excel')?.addEventListener('click', exportLedgerToExcel);
+      document.getElementById('btn-close-script-viewer')?.addEventListener('click', closeScriptViewer);
+      document.getElementById('btn-copy-script')?.addEventListener('click', copyGeneratedScript);
+
+      document.querySelectorAll('.ledger-type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectLedgerType(btn.dataset.ledgerType);
+        });
+      });
       document.getElementById('btn-close-metrics')?.addEventListener('click', closeMetricsModal);
       document.getElementById('btn-save-metrics')?.addEventListener('click', saveMetricsModal);
 
